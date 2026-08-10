@@ -22,3 +22,6 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# preview build served via GitHub Pages
+# docs/ is committed intentionally for Pages
