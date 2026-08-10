@@ -4,8 +4,9 @@ import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://Ricozwar.github.io',
-  base: '/osiedle-zietka',
+  site: 'https://ricozwar.github.io',
+  // Relative base so preview works on GitHub Pages and CDN mirrors
+  base: './',
   vite: {
     plugins: [tailwindcss()],
   },
