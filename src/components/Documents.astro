@@ -1,0 +1,72 @@
+---
+import { asset, site } from '../data/site';
+
+const docs = [
+  {
+    title: 'Część ogólna prospektu informacyjnego',
+    desc: 'Obowiązkowy dokument (art. 19a) — PDF do pobrania po dostarczeniu przez dewelopera.',
+    href: asset('documents/prospekt-czesc-ogolna.pdf'),
+    required: true,
+  },
+  {
+    title: 'Wzór umowy deweloperskiej',
+    desc: 'Opcjonalnie na stronie — standardowo doręczany wraz z prospektem.',
+    href: asset('documents/wzor-umowy-deweloperskiej.pdf'),
+    required: false,
+  },
+  {
+    title: 'Szkic zagospodarowania terenu',
+    desc: 'Załącznik do prospektu — koncepcja zabudowy i otoczenia.',
+    href: asset('documents/szkic-zagospodarowania.pdf'),
+    required: false,
+  },
+];
+---
+
+<section id="dokumenty" class="scroll-mt-20 border-t border-line/60 bg-ink-soft/40 py-20 sm:py-28">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6">
+    <div class="reveal max-w-2xl">
+      <p class="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-accent">Dokumenty</p>
+      <h2 class="font-display text-3xl font-bold tracking-tight text-sand sm:text-5xl text-balance">
+        Prospekt i materiały informacyjne
+      </h2>
+      <p class="mt-4 text-muted">
+        Na stronie udostępniamy część ogólną prospektu informacyjnego dotyczącego przedsięwzięcia
+        deweloperskiego Osiedle Ziętka.
+      </p>
+      <p class="mt-2 text-xs text-muted">
+        Data aktualizacji listy dokumentów: {site.documentsUpdated}
+      </p>
+    </div>
+
+    <ul class="reveal mt-10 divide-y divide-line border-y border-line">
+      {
+        docs.map((doc) => (
+          <li class="flex flex-col gap-3 py-5 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <p class="font-display text-lg font-bold text-sand">
+                {doc.title}
+                {doc.required ? (
+                  <span class="ml-2 text-xs font-semibold uppercase tracking-wide text-accent">
+                    wymagane
+                  </span>
+                ) : null}
+              </p>
+              <p class="mt-1 max-w-xl text-sm text-muted">{doc.desc}</p>
+            </div>
+            <a
+              href={doc.href}
+              class="inline-flex shrink-0 items-center justify-center rounded-md border border-line px-4 py-2 text-sm font-semibold text-sand transition hover:border-accent hover:text-accent"
+            >
+              Pobierz PDF
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="reveal mt-4 text-xs text-muted">
+      Pliki PDF zostaną podmienione na finalne dokumenty od dewelopera. Do czasu ich dodania linki
+      mogą prowadzić do pustego zasobu.
+    </p>
+  </div>
+</section>

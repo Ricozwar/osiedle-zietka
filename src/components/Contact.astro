@@ -1,0 +1,120 @@
+---
+import { site, units } from '../data/site';
+---
+
+<section id="kontakt" class="scroll-mt-20 border-t border-line/60 bg-ink-soft/50 py-20 sm:pb-32 sm:pt-28">
+  <div class="mx-auto grid max-w-6xl gap-12 px-4 sm:px-6 lg:grid-cols-2">
+    <div class="reveal">
+      <p class="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-accent">Kontakt</p>
+      <h2 class="font-display text-3xl font-bold tracking-tight text-sand sm:text-5xl">
+        Zapytaj o segment
+      </h2>
+      <p class="mt-4 text-muted">
+        Skontaktuj się w sprawie dostępności, rezerwacji i szczegółów oferty Osiedle Ziętka.
+      </p>
+
+      <div class="mt-8 space-y-4 text-sand">
+        <p>
+          <span class="block text-xs uppercase tracking-wide text-muted">Telefon</span>
+          <a class="text-xl font-semibold text-accent hover:text-accent-hot" href={site.phoneHref}>
+            {site.phone}
+          </a>
+        </p>
+        <p>
+          <span class="block text-xs uppercase tracking-wide text-muted">E-mail</span>
+          <a class="font-semibold text-accent hover:text-accent-hot" href={`mailto:${site.email}`}>
+            {site.email}
+          </a>
+        </p>
+        <p>
+          <span class="block text-xs uppercase tracking-wide text-muted">Lokalizacja inwestycji</span>
+          {site.address}
+        </p>
+        <p>
+          <span class="block text-xs uppercase tracking-wide text-muted">Godziny</span>
+          {site.salesHours}
+        </p>
+        <p>
+          <a
+            class="font-semibold text-sand underline decoration-accent/60 underline-offset-4 hover:text-accent"
+            href={site.facebook}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Profil Facebook inwestycji
+          </a>
+        </p>
+      </div>
+    </div>
+
+    <form class="reveal space-y-4 rounded-xl border border-line bg-ink/60 p-5 sm:p-6" method="post" action="#">
+      <p class="text-sm text-muted">
+        Formularz demonstracyjny (v1) — docelowo wyśle wiadomość na e-mail sprzedaży.
+      </p>
+      <div>
+        <label for="name" class="mb-1 block text-xs uppercase tracking-wide text-muted">Imię i nazwisko</label>
+        <input
+          id="name"
+          name="name"
+          required
+          class="w-full rounded-md border border-line bg-ink-soft px-3 py-2.5 text-sand outline-none ring-accent focus:ring-2"
+        />
+      </div>
+      <div class="grid gap-4 sm:grid-cols-2">
+        <div>
+          <label for="phone" class="mb-1 block text-xs uppercase tracking-wide text-muted">Telefon</label>
+          <input
+            id="phone"
+            name="phone"
+            type="tel"
+            required
+            class="w-full rounded-md border border-line bg-ink-soft px-3 py-2.5 text-sand outline-none ring-accent focus:ring-2"
+          />
+        </div>
+        <div>
+          <label for="email" class="mb-1 block text-xs uppercase tracking-wide text-muted">E-mail</label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            required
+            class="w-full rounded-md border border-line bg-ink-soft px-3 py-2.5 text-sand outline-none ring-accent focus:ring-2"
+          />
+        </div>
+      </div>
+      <div>
+        <label for="unit" class="mb-1 block text-xs uppercase tracking-wide text-muted">Numer segmentu</label>
+        <select
+          id="unit"
+          name="unit"
+          class="w-full rounded-md border border-line bg-ink-soft px-3 py-2.5 text-sand outline-none ring-accent focus:ring-2"
+        >
+          <option value="">Bez preferencji</option>
+          {units.map((u) => <option value={u.id}>Segment {u.id} ({u.area} m²)</option>)}
+        </select>
+      </div>
+      <div>
+        <label for="message" class="mb-1 block text-xs uppercase tracking-wide text-muted">Wiadomość</label>
+        <textarea
+          id="message"
+          name="message"
+          rows="4"
+          class="w-full rounded-md border border-line bg-ink-soft px-3 py-2.5 text-sand outline-none ring-accent focus:ring-2"
+        ></textarea>
+      </div>
+      <label class="flex items-start gap-2 text-xs text-muted">
+        <input type="checkbox" name="privacy" required class="mt-0.5" />
+        <span>
+          Wyrażam zgodę na kontakt w sprawie oferty oraz akceptuję
+          <a href={`${import.meta.env.BASE_URL}polityka-prywatnosci/`} class="text-accent hover:underline">politykę prywatności</a>.
+        </span>
+      </label>
+      <button
+        type="submit"
+        class="w-full rounded-md bg-accent px-4 py-3 text-sm font-bold text-ink transition hover:bg-accent-hot"
+      >
+        Wyślij zapytanie
+      </button>
+    </form>
+  </div>
+</section>

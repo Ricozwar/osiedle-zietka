@@ -1,0 +1,81 @@
+---
+import { gallery } from '../data/site';
+---
+
+<section id="galeria" class="scroll-mt-20 border-t border-line/60 py-20 sm:py-28">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6">
+    <div class="reveal max-w-2xl">
+      <p class="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-accent">Galeria</p>
+      <h2 class="font-display text-3xl font-bold tracking-tight text-sand sm:text-5xl">
+        Atmosfera inwestycji
+      </h2>
+      <p class="mt-4 text-muted">
+        Wizualizacje i materiały z oferty Osiedle Ziętka — elewacje, ogrody, rzuty i standard.
+      </p>
+    </div>
+  </div>
+
+  <div
+    class="reveal mt-10 grid gap-3 px-4 sm:grid-cols-2 sm:px-6 lg:mx-auto lg:max-w-6xl lg:grid-cols-3"
+  >
+    {
+      gallery.map((item, i) => (
+        <a
+          href={item.src}
+          class="gallery-item group relative block overflow-hidden border border-line bg-surface"
+          data-gallery-index={i}
+        >
+          <img
+            src={item.src}
+            alt={item.alt}
+            loading="lazy"
+            class="aspect-[4/5] w-full object-cover transition duration-500 group-hover:scale-[1.03]"
+          />
+          <div
+            class="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink via-ink/70 to-transparent p-4 pt-16"
+          >
+            <p class="font-display text-lg font-semibold text-sand">
+              {String(i + 1).padStart(2, '0')} · {item.title}
+            </p>
+          </div>
+        </a>
+      ))
+    }
+  </div>
+</section>
+
+<dialog
+  id="gallery-lightbox"
+  class="m-auto max-h-[92dvh] w-[min(96vw,1100px)] border-0 bg-transparent p-0 backdrop:bg-ink/90"
+>
+  <form method="dialog" class="absolute right-2 top-2 z-10">
+    <button
+      type="submit"
+      class="rounded-md bg-ink/80 px-3 py-2 text-sm font-semibold text-sand ring-1 ring-line"
+      aria-label="Zamknij"
+    >
+      Zamknij
+    </button>
+  </form>
+  <img id="gallery-lightbox-img" src="" alt="" class="max-h-[92dvh] w-full object-contain" />
+</dialog>
+
+<script>
+  const dialog = document.getElementById('gallery-lightbox');
+  const img = document.getElementById('gallery-lightbox-img');
+
+  document.querySelectorAll('.gallery-item').forEach((el) => {
+    el.addEventListener('click', (event) => {
+      event.preventDefault();
+      if (!(dialog instanceof HTMLDialogElement) || !(img instanceof HTMLImageElement)) return;
+      const link = /** @type {HTMLAnchorElement} */ (el);
+      img.src = link.href;
+      img.alt = link.querySelector('img')?.alt ?? '';
+      dialog.showModal();
+    });
+  });
+
+  dialog?.addEventListener('click', (event) => {
+    if (event.target === dialog && dialog instanceof HTMLDialogElement) dialog.close();
+  });
+</script>

@@ -1,0 +1,62 @@
+---
+import { site } from '../data/site';
+---
+
+<section id="top" class="relative isolate min-h-dvh overflow-hidden grain">
+  <div class="absolute inset-0 -z-20">
+    <img
+      src={site.heroImage}
+      alt="Wizualizacja Osiedle Ziętka — tarasy i ogrody domów szeregowych"
+      class="h-full w-full object-cover object-[center_35%] scale-105"
+      fetchpriority="high"
+    />
+  </div>
+  <div
+    class="absolute inset-0 -z-10 bg-gradient-to-r from-ink via-ink/85 to-ink/35"
+    aria-hidden="true"
+  >
+  </div>
+  <div
+    class="absolute inset-0 -z-10 bg-gradient-to-t from-ink from-25% via-ink/55 to-ink/25"
+    aria-hidden="true"
+  >
+  </div>
+
+  <div class="mx-auto flex min-h-dvh max-w-6xl flex-col justify-center px-4 pb-28 pt-28 sm:px-6">
+    <p
+      class="reveal is-visible mb-4 text-sm font-semibold uppercase tracking-[0.22em] text-accent"
+      style="transition-delay: 80ms"
+    >
+      {site.locationShort}
+    </p>
+    <h1
+      class="reveal is-visible font-display text-5xl font-extrabold leading-[0.95] tracking-tight text-sand sm:text-7xl lg:text-8xl"
+      style="transition-delay: 160ms"
+    >
+      OSIEDLE<br /><span class="text-accent">ZIĘTKA</span>
+    </h1>
+    <p
+      class="reveal is-visible mt-6 max-w-xl text-lg text-muted sm:text-xl text-balance"
+      style="transition-delay: 240ms"
+    >
+      {site.tagline}. Dom zamiast mieszkania — z własnym ogródkiem i miejscami postojowymi.
+    </p>
+    <div class="reveal is-visible mt-10 flex flex-wrap gap-3" style="transition-delay: 320ms">
+      <a
+        href="#cennik"
+        class="inline-flex items-center justify-center rounded-md bg-accent px-5 py-3 text-sm font-bold text-ink transition hover:bg-accent-hot"
+      >
+        Zobacz cennik
+      </a>
+      <a
+        href="#kontakt"
+        class="inline-flex items-center justify-center rounded-md border border-line px-5 py-3 text-sm font-semibold text-sand transition hover:border-accent hover:text-accent"
+      >
+        Kontakt
+      </a>
+    </div>
+    <p class="reveal is-visible mt-8 text-sm text-muted" style="transition-delay: 400ms">
+      Metraże {site.areaRange} · ogródek · 2 miejsca postojowe · osiedle zamknięte
+    </p>
+  </div>
+</section>

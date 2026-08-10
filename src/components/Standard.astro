@@ -1,0 +1,52 @@
+---
+import { asset } from '../data/site';
+
+const items = [
+  {
+    title: 'Konstrukcja',
+    text: 'Płyta fundamentowa, mury z pustaka ceramicznego, ocieplenie 20 cm styropianem, elewacja tynkowana.',
+  },
+  {
+    title: 'Dach i stolarka',
+    text: 'Dach dwuspadowy, dachówka betonowa grafitowa, okna 3-szybowe. Rolety zewnętrzne jako opcja dodatkowa.',
+  },
+  {
+    title: 'Instalacje',
+    text: 'Ogrzewanie podłogowe z kotłem gazowym Vaillant, pełna instalacja elektryczna oraz wodno-kanalizacyjna.',
+  },
+  {
+    title: 'Ogród, taras, parking',
+    text: 'Własny ogródek i taras, 2 miejsca postojowe, droga wewnętrzna z kostki, osiedle zamknięte z 2 bramami.',
+  },
+];
+---
+
+<section id="standard" class="scroll-mt-20 border-t border-line/60 py-20 sm:py-28">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6">
+    <div class="reveal grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
+      <div class="max-w-2xl">
+        <p class="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-accent">Segmenty i standard</p>
+        <h2 class="font-display text-3xl font-bold tracking-tight text-sand sm:text-5xl text-balance">
+          To, co dostajesz wraz z kluczem.
+        </h2>
+      </div>
+      <img
+        src={asset('images/gallery/08-standard.jpg')}
+        alt="Standard wykończenia lokali Osiedle Ziętka"
+        class="reveal w-full rounded-xl border border-line object-cover"
+        loading="lazy"
+      />
+    </div>
+
+    <div class="reveal mt-12 grid gap-8 sm:grid-cols-2">
+      {
+        items.map((item) => (
+          <div class="border-t border-accent/30 pt-5">
+            <h3 class="font-display text-xl font-bold text-sand">{item.title}</h3>
+            <p class="mt-3 text-muted">{item.text}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

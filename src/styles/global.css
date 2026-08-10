@@ -1,0 +1,68 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-ink: #12100e;
+  --color-ink-soft: #1c1916;
+  --color-surface: #24201c;
+  --color-line: #3a342e;
+  --color-sand: #e8e0d4;
+  --color-muted: #a89f93;
+  --color-accent: #e87722;
+  --color-accent-hot: #ff8f3a;
+  --color-ok: #6fbf73;
+  --color-warn: #e8a838;
+  --font-display: 'Syne', ui-sans-serif, system-ui, sans-serif;
+  --font-body: 'Manrope', ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    color-scheme: dark;
+  }
+
+  body {
+    @apply bg-ink text-sand font-body antialiased;
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -20%, rgb(232 119 34 / 0.18), transparent),
+      radial-gradient(ellipse 60% 40% at 100% 0%, rgb(255 143 58 / 0.06), transparent),
+      linear-gradient(180deg, #12100e 0%, #161310 100%);
+    background-attachment: fixed;
+  }
+
+  ::selection {
+    @apply bg-accent text-ink;
+  }
+}
+
+@layer utilities {
+  .reveal {
+    opacity: 0;
+    transform: translateY(1.25rem);
+    transition:
+      opacity 0.7s ease,
+      transform 0.7s ease;
+  }
+
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .grain {
+    position: relative;
+  }
+
+  .grain::after {
+    content: '';
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    opacity: 0.04;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+}

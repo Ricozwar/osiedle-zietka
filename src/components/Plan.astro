@@ -1,0 +1,101 @@
+---
+import { units, statusLabel, site } from '../data/site';
+---
+
+<section id="plan" class="scroll-mt-20 border-t border-line/60 bg-ink-soft/40 py-20 sm:py-28">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6">
+    <div class="reveal max-w-2xl">
+      <p class="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-accent">Plan osiedla</p>
+      <h2 class="font-display text-3xl font-bold tracking-tight text-sand sm:text-5xl">
+        Segmenty 1–11
+      </h2>
+      <p class="mt-4 text-muted">
+        Wybierz segment, aby zobaczyć metraż i status. Ceny brutto oraz historię zmian znajdziesz w
+        sekcji cennika.
+      </p>
+    </div>
+
+    <figure class="reveal mt-10 overflow-hidden rounded-xl border border-line bg-ink">
+      <img
+        src={site.planImage}
+        alt="Plan lokalizacji Osiedle Ziętka — Knurów"
+        class="w-full object-cover object-center"
+        loading="lazy"
+      />
+    </figure>
+
+    <div class="reveal mt-6 overflow-x-auto rounded-xl border border-line bg-ink/60 p-4 sm:p-6">
+      <div class="mb-4 flex flex-wrap gap-4 text-xs uppercase tracking-wide text-muted">
+        <span class="inline-flex items-center gap-2"
+          ><span class="h-2.5 w-2.5 rounded-sm bg-ok"></span> Dostępny</span
+        >
+        <span class="inline-flex items-center gap-2"
+          ><span class="h-2.5 w-2.5 rounded-sm bg-warn"></span> Rezerwacja</span
+        >
+        <span class="inline-flex items-center gap-2"
+          ><span class="h-2.5 w-2.5 rounded-sm bg-line"></span> Sprzedany</span
+        >
+      </div>
+
+      <div
+        class="grid min-w-[640px] grid-cols-11 gap-2"
+        role="list"
+        aria-label="Plan segmentów Osiedle Ziętka"
+      >
+        {
+          units.map((unit) => {
+            const tone =
+              unit.status === 'available'
+                ? 'border-ok/70 bg-ok/10 hover:bg-ok/20'
+                : unit.status === 'reserved'
+                  ? 'border-warn/70 bg-warn/10 hover:bg-warn/20'
+                  : 'border-line bg-surface/40 opacity-60';
+            return (
+              <a
+                href={`#segment-${unit.id}`}
+                role="listitem"
+                class:list={[
+                  'group flex aspect-[3/5] flex-col justify-between rounded-md border p-2 transition',
+                  tone,
+                ]}
+                data-unit={unit.id}
+              >
+                <span class="font-display text-lg font-bold text-sand">{unit.id}</span>
+                <span class="text-[10px] leading-tight text-muted">
+                  {unit.area} m²
+                  {unit.note ? ` · ${unit.note}` : ''}
+                </span>
+              </a>
+            );
+          })
+        }
+      </div>
+      <p class="mt-4 text-center text-xs text-muted">ULICA ZIĘTKA</p>
+    </div>
+
+    <div class="reveal mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        units.map((unit) => (
+          <div
+            id={`segment-${unit.id}`}
+            class="scroll-mt-28 border-b border-line/80 py-3 sm:border-b-0 sm:border-l sm:border-line/80 sm:pl-4"
+          >
+            <p class="font-display text-lg font-bold text-sand">
+              Segment {unit.id}
+              <span class="ml-2 text-sm font-medium text-muted">
+                {statusLabel[unit.status]}
+              </span>
+            </p>
+            <p class="mt-1 text-sm text-muted">
+              {unit.area} m² powierzchni użytkowej
+              {unit.note ? ` (${unit.note})` : ''}
+            </p>
+            <a href="#cennik" class="mt-2 inline-block text-sm font-semibold text-accent hover:text-accent-hot">
+              Zobacz w cenniku →
+            </a>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

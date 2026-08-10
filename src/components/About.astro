@@ -1,0 +1,32 @@
+---
+const points = [
+  'Parterowe, małe domy — komfort domu bez skali willi.',
+  'Własny ogródek przy każdym segmencie.',
+  'Dwa miejsca postojowe w cenie koncepcji osiedla.',
+  'Osiedle zamknięte przy ul. Ziętka w Knurowie.',
+  'Kameralna skala: 11 segmentów w jednej inwestycji.',
+];
+---
+
+<section id="oferta" class="scroll-mt-20 border-t border-line/60 py-20 sm:py-28">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6">
+    <div class="reveal max-w-2xl">
+      <p class="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-accent">O inwestycji</p>
+      <h2 class="font-display text-3xl font-bold tracking-tight text-sand sm:text-5xl text-balance">
+        Dom zamiast mieszkania — w skali, która ma sens.
+      </h2>
+      <p class="mt-5 text-lg text-muted text-balance">
+        Osiedle Ziętka to nowoczesne osiedle małych domów w Knurowie. Projekt łączy prywatność
+        własnego ogródka z wygodą kameralnej zabudowy szeregowej.
+      </p>
+    </div>
+
+    <ul class="reveal mt-12 max-w-3xl space-y-4 border-l border-accent/40 pl-6">
+      {
+        points.map((point) => (
+          <li class="text-base text-sand/90 sm:text-lg">{point}</li>
+        ))
+      }
+    </ul>
+  </div>
+</section>

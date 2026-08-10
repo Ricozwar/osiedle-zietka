@@ -1,0 +1,45 @@
+---
+import { site } from '../data/site';
+---
+
+<footer class="border-t border-line bg-ink pb-24 pt-12 lg:pb-12">
+  <div class="mx-auto grid max-w-6xl gap-8 px-4 sm:px-6 md:grid-cols-3">
+    <div>
+      <p class="font-display text-xl font-bold text-sand">
+        OSIEDLE <span class="text-accent">ZIĘTKA</span>
+      </p>
+      <p class="mt-2 text-sm text-muted">{site.tagline}</p>
+      <p class="mt-4 text-sm text-muted">{site.address}</p>
+    </div>
+    <div class="text-sm text-muted">
+      <p class="font-semibold text-sand">Kontakt</p>
+      <p class="mt-2">
+        <a href={site.phoneHref} class="hover:text-accent">{site.phone}</a>
+      </p>
+      <p>
+        <a href={`mailto:${site.email}`} class="hover:text-accent">{site.email}</a>
+      </p>
+      <p class="mt-2">{site.developer.name}</p>
+      <p>{site.developer.seat}</p>
+    </div>
+    <div class="text-sm">
+      <p class="font-semibold text-sand">Informacje</p>
+      <ul class="mt-2 space-y-2 text-muted">
+        <li><a class="hover:text-accent" href="#cennik">Cennik</a></li>
+        <li><a class="hover:text-accent" href="#dokumenty">Prospekt</a></li>
+        <li><a class="hover:text-accent" href={`${import.meta.env.BASE_URL}polityka-prywatnosci/`}>Polityka prywatności</a></li>
+        <li>
+          <button type="button" id="cookie-settings" class="hover:text-accent">
+            Ustawienia cookies
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="mx-auto mt-10 max-w-6xl border-t border-line px-4 pt-6 text-xs text-muted sm:px-6">
+    <p>
+      © {new Date().getFullYear()} {site.name}. Strona spełnia obowiązki informacyjne art. 19a ustawy
+      deweloperskiej w zakresie publikacji danych i cennika (źródło cen: publikatorcen.pl).
+    </p>
+  </div>
+</footer>

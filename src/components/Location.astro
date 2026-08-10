@@ -1,0 +1,45 @@
+---
+import { site } from '../data/site';
+
+const nearby = [
+  'Bezpośredni dojazd ul. Ziętka',
+  'Lokalizacja w Knurowie — blisko codziennych usług',
+  'Dobre połączenie z Gliwicami i aglomeracją',
+  'Kameralna skala osiedla w spokojnym otoczeniu',
+];
+
+const mapQuery = encodeURIComponent('ul. Ziętka, Knurów');
+---
+
+<section id="lokalizacja" class="scroll-mt-20 border-t border-line/60 py-20 sm:py-28">
+  <div class="mx-auto grid max-w-6xl gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:items-start">
+    <div class="reveal">
+      <p class="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-accent">Lokalizacja</p>
+      <h2 class="font-display text-3xl font-bold tracking-tight text-sand sm:text-5xl">
+        Knurów, ul. Ziętka
+      </h2>
+      <p class="mt-4 text-lg text-muted">{site.address}</p>
+      <ul class="mt-8 space-y-3">
+        {
+          nearby.map((item) => (
+            <li class="flex gap-3 text-sand/90">
+              <span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" aria-hidden="true" />
+              <span>{item}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div class="reveal overflow-hidden rounded-xl border border-line bg-surface">
+      <iframe
+        title="Mapa — Osiedle Ziętka, Knurów"
+        class="aspect-[4/3] w-full grayscale-[20%] contrast-125"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        src={`https://maps.google.com/maps?q=${mapQuery}&z=15&output=embed`}
+      >
+      </iframe>
+    </div>
+  </div>
+</section>

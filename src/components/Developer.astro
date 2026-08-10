@@ -1,0 +1,59 @@
+---
+import { site } from '../data/site';
+const d = site.developer;
+---
+
+<section id="deweloper" class="scroll-mt-20 border-t border-line/60 py-20 sm:py-28">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6">
+    <div class="reveal max-w-2xl">
+      <p class="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-accent">Deweloper</p>
+      <h2 class="font-display text-3xl font-bold tracking-tight text-sand sm:text-5xl">
+        Dane sprzedającego
+      </h2>
+      <p class="mt-4 text-muted">
+        Informacje wymagane art. 19a — uzupełnimy pełnymi danymi z prospektu informacyjnego.
+      </p>
+    </div>
+
+    <dl class="reveal mt-10 grid gap-6 sm:grid-cols-2">
+      <div class="border-t border-line pt-4">
+        <dt class="text-xs uppercase tracking-wide text-muted">Firma</dt>
+        <dd class="mt-2 text-sand">{d.name}</dd>
+      </div>
+      <div class="border-t border-line pt-4">
+        <dt class="text-xs uppercase tracking-wide text-muted">Forma prawna</dt>
+        <dd class="mt-2 text-sand">{d.legalForm}</dd>
+      </div>
+      <div class="border-t border-line pt-4">
+        <dt class="text-xs uppercase tracking-wide text-muted">NIP</dt>
+        <dd class="mt-2 text-sand">{d.nip}</dd>
+      </div>
+      <div class="border-t border-line pt-4">
+        <dt class="text-xs uppercase tracking-wide text-muted">REGON</dt>
+        <dd class="mt-2 text-sand">{d.regon}</dd>
+      </div>
+      <div class="border-t border-line pt-4 sm:col-span-2">
+        <dt class="text-xs uppercase tracking-wide text-muted">
+          Adres siedziby / miejsca działalności
+        </dt>
+        <dd class="mt-2 text-sand">{d.seat}</dd>
+      </div>
+      <div class="border-t border-line pt-4 sm:col-span-2">
+        <dt class="text-xs uppercase tracking-wide text-muted">Adres lokalu sprzedaży</dt>
+        <dd class="mt-2 text-sand">{d.salesOffice}</dd>
+      </div>
+      <div class="border-t border-line pt-4">
+        <dt class="text-xs uppercase tracking-wide text-muted">Telefon</dt>
+        <dd class="mt-2">
+          <a class="text-accent hover:text-accent-hot" href={site.phoneHref}>{site.phone}</a>
+        </dd>
+      </div>
+      <div class="border-t border-line pt-4">
+        <dt class="text-xs uppercase tracking-wide text-muted">E-mail</dt>
+        <dd class="mt-2">
+          <a class="text-accent hover:text-accent-hot" href={`mailto:${site.email}`}>{site.email}</a>
+        </dd>
+      </div>
+    </dl>
+  </div>
+</section>

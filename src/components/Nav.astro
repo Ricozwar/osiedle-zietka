@@ -1,0 +1,93 @@
+---
+import { site } from '../data/site';
+
+const links = [
+  { href: '#oferta', label: 'Oferta' },
+  { href: '#plan', label: 'Plan' },
+  { href: '#cennik', label: 'Cennik' },
+  { href: '#lokalizacja', label: 'Lokalizacja' },
+  { href: '#dokumenty', label: 'Dokumenty' },
+  { href: '#kontakt', label: 'Kontakt' },
+];
+---
+
+<header
+  class="fixed inset-x-0 top-0 z-50 border-b border-white/5 bg-ink/80 backdrop-blur-md"
+>
+  <div class="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
+    <a href="#top" class="font-display text-lg font-bold tracking-wide text-sand sm:text-xl">
+      OSIEDLE <span class="text-accent">ZIĘTKA</span>
+    </a>
+
+    <nav class="hidden items-center gap-6 lg:flex" aria-label="Główne">
+      {
+        links.map((link) => (
+          <a
+            href={link.href}
+            class="text-sm font-medium text-muted transition hover:text-sand"
+          >
+            {link.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <div class="flex items-center gap-2">
+      <a
+        href={site.phoneHref}
+        class="hidden rounded-md bg-accent px-3 py-2 text-sm font-semibold text-ink transition hover:bg-accent-hot sm:inline-flex"
+      >
+        Zadzwoń
+      </a>
+      <button
+        type="button"
+        id="nav-toggle"
+        class="inline-flex h-10 w-10 items-center justify-center rounded-md border border-line text-sand lg:hidden"
+        aria-expanded="false"
+        aria-controls="mobile-nav"
+        aria-label="Otwórz menu"
+      >
+        <span class="sr-only">Menu</span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div id="mobile-nav" class="hidden border-t border-line bg-ink-soft lg:hidden">
+    <nav class="mx-auto flex max-w-6xl flex-col gap-1 px-4 py-3" aria-label="Mobilne">
+      {
+        links.map((link) => (
+          <a
+            href={link.href}
+            class="nav-mobile-link rounded-md px-3 py-3 text-sm font-medium text-sand hover:bg-white/5"
+          >
+            {link.label}
+          </a>
+        ))
+      }
+      <a
+        href={site.phoneHref}
+        class="mt-2 rounded-md bg-accent px-3 py-3 text-center text-sm font-semibold text-ink"
+      >
+        Zadzwoń: {site.phone}
+      </a>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const toggle = document.getElementById('nav-toggle');
+  const panel = document.getElementById('mobile-nav');
+  toggle?.addEventListener('click', () => {
+    const open = panel?.classList.toggle('hidden') === false;
+    toggle.setAttribute('aria-expanded', String(open));
+  });
+  panel?.querySelectorAll('.nav-mobile-link').forEach((link) => {
+    link.addEventListener('click', () => {
+      panel.classList.add('hidden');
+      toggle?.setAttribute('aria-expanded', 'false');
+    });
+  });
+</script>
