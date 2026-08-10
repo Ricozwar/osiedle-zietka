@@ -15,7 +15,8 @@ export interface GalleryImage {
 
 /** Prefiks ścieżek pod GitHub Pages (`/osiedle-zietka/`) */
 export function asset(path: string): string {
-  const base = import.meta.env.BASE_URL ?? '/';
+  const rawBase = import.meta.env.BASE_URL ?? '/';
+  const base = rawBase.endsWith('/') ? rawBase : `${rawBase}/`;
   return `${base}${path.replace(/^\//, '')}`;
 }
 
