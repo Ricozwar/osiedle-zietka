@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <rect width="64" height="64" rx="12" fill="#12100e"/>
+  <path d="M12 44V22l20-10 20 10v22" stroke="#e87722" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M24 44V30h16v14" stroke="#e8e0d4" stroke-width="2.5"/>
+  <text x="32" y="56" text-anchor="middle" fill="#e87722" font-family="Arial,sans-serif" font-size="8" font-weight="700">OZ</text>
+</svg>
