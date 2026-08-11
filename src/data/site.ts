@@ -134,7 +134,11 @@ export const units: Unit[] = [
     id: 2,
     area: 51,
     status: 'reserved',
-    images: [],
+    images: [
+      { src: seg(2, 'marketing-3d.png'), label: 'Rzut 3D', kind: 'marketing' },
+      { src: seg(2, 'marketing.png'), label: 'Rzut marketingowy', kind: 'marketing' },
+      { src: seg(2, 'plan.png'), label: 'Rzut techniczny', kind: 'plan' },
+    ],
   },
   {
     id: 3,
