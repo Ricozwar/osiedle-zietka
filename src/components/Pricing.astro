@@ -49,10 +49,7 @@ import { units, statusLabel, site } from '../data/site';
             units.map((unit) => (
               <tr class="border-t border-line/80">
                 <td class="px-4 py-3 font-semibold text-sand">{unit.id}</td>
-                <td class="px-4 py-3 text-muted">
-                  {unit.area} m²
-                  {unit.note ? ` (${unit.note})` : ''}
-                </td>
+                <td class="px-4 py-3 text-muted">{unit.area} m²</td>
                 <td class="px-4 py-3 text-muted">{statusLabel[unit.status]}</td>
                 <td class="px-4 py-3 text-muted">— (Publikator Cen)</td>
                 <td class="px-4 py-3 text-muted">— (Publikator Cen)</td>
