@@ -1,0 +1,109 @@
+---
+import { site } from '../data/site';
+
+const fbHref = encodeURIComponent(site.facebook);
+const pluginSrc = `https://www.facebook.com/plugins/page.php?href=${fbHref}&tabs=timeline&width=500&height=600&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=false&locale=pl_PL`;
+---
+
+<section id="aktualnosci" class="scroll-mt-20 border-t border-line/60 bg-ink-soft/40 py-20 sm:py-28">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6">
+    <div class="reveal max-w-2xl">
+      <p class="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-accent">Aktualności</p>
+      <h2 class="font-display text-3xl font-bold tracking-tight text-sand sm:text-5xl">
+        Aktualności z inwestycji
+      </h2>
+      <p class="mt-4 text-muted">
+        Bieżące informacje o postępach budowy i ofercie — bezpośrednio z profilu Facebook Osiedle
+        Ziętka.
+      </p>
+    </div>
+
+    <div class="reveal mt-10 mx-auto max-w-[500px]">
+      <div
+        id="fb-news-gate"
+        class="rounded-xl border border-line bg-ink/60 p-8 text-center"
+      >
+        <p class="text-sm text-muted text-balance">
+          Aby wyświetlić aktualności z Facebooka, zaakceptuj cookies — wtyczka ładuje treści i
+          pliki Meta Platforms.
+        </p>
+        <div class="mt-6 flex flex-col gap-2 sm:flex-row sm:justify-center">
+          <button
+            type="button"
+            id="fb-news-accept"
+            class="inline-flex items-center justify-center rounded-md bg-accent px-4 py-3 text-sm font-bold text-ink transition hover:bg-accent-hot"
+          >
+            Pokaż aktualności z Facebooka
+          </button>
+          <a
+            href={site.facebook}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center justify-center rounded-md border border-line px-4 py-3 text-sm font-semibold text-sand transition hover:border-accent hover:text-accent"
+          >
+            Otwórz profil na Facebooku
+          </a>
+        </div>
+      </div>
+
+      <div id="fb-news-embed" class="hidden overflow-hidden rounded-xl border border-line bg-ink">
+        <iframe
+          id="fb-news-iframe"
+          title="Aktualności Facebook — Osiedle Ziętka"
+          src=""
+          data-src={pluginSrc}
+          width="500"
+          height="600"
+          class="mx-auto w-full max-w-[500px] border-0"
+          style="border:none;overflow:hidden"
+          scrolling="no"
+          allow="encrypted-media; clipboard-write"
+          loading="lazy"
+        ></iframe>
+        <p class="border-t border-line px-4 py-3 text-center text-xs text-muted">
+          Nie widać postów?
+          <a
+            href={site.facebook}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-accent hover:underline"
+          >
+            Otwórz profil na Facebooku
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const KEY = 'oz-cookies-ok';
+  const gate = document.getElementById('fb-news-gate');
+  const embed = document.getElementById('fb-news-embed');
+  const iframe = document.getElementById('fb-news-iframe');
+  const acceptBtn = document.getElementById('fb-news-accept');
+
+  function showFeed() {
+    if (!iframe || !gate || !embed) return;
+    const src = iframe.getAttribute('data-src');
+    if (src && !iframe.getAttribute('src')) {
+      iframe.setAttribute('src', src);
+    }
+    gate.classList.add('hidden');
+    embed.classList.remove('hidden');
+  }
+
+  function acceptAndShow() {
+    localStorage.setItem(KEY, '1');
+    document.getElementById('cookie-banner')?.classList.add('hidden');
+    window.dispatchEvent(new CustomEvent('oz-cookies-accepted'));
+    showFeed();
+  }
+
+  if (localStorage.getItem(KEY)) {
+    showFeed();
+  }
+
+  acceptBtn?.addEventListener('click', acceptAndShow);
+  window.addEventListener('oz-cookies-accepted', showFeed);
+</script>

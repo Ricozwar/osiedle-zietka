@@ -45,6 +45,7 @@ import { site, asset } from '../data/site';
   accept?.addEventListener('click', () => {
     localStorage.setItem(KEY, '1');
     hide();
+    window.dispatchEvent(new CustomEvent('oz-cookies-accepted'));
   });
   settings?.addEventListener('click', show);
 </script>
