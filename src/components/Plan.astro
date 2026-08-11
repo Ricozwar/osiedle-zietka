@@ -1,5 +1,19 @@
 ---
-import { units, statusLabel, site } from '../data/site';
+import { units, statusLabel, site, primaryUnitImage } from '../data/site';
+
+const defaultUnit = units.find((u) => u.id === site.defaultUnitId) ?? units[0];
+const defaultPrimary = primaryUnitImage(defaultUnit);
+const unitsJson = JSON.stringify(
+  units.map((u) => ({
+    id: u.id,
+    area: u.area,
+    note: u.note ?? null,
+    status: u.status,
+    statusLabel: statusLabel[u.status],
+    images: u.images,
+    primary: primaryUnitImage(u) ?? null,
+  })),
+);
 ---
 
 <section id="plan" class="scroll-mt-20 border-t border-line/60 bg-ink-soft/40 py-20 sm:py-28">
@@ -10,8 +24,8 @@ import { units, statusLabel, site } from '../data/site';
         Segmenty 1–11
       </h2>
       <p class="mt-4 text-muted">
-        Wybierz segment, aby zobaczyć metraż i status. Ceny brutto oraz historię zmian znajdziesz w
-        sekcji cennika.
+        Wybierz segment, aby zobaczyć rzut, metraż i status. Ceny brutto oraz historię zmian znajdziesz
+        w sekcji cennika.
       </p>
     </div>
 
@@ -38,8 +52,9 @@ import { units, statusLabel, site } from '../data/site';
       </div>
 
       <div
+        id="unit-strip"
         class="grid min-w-[640px] grid-cols-11 gap-2"
-        role="list"
+        role="listbox"
         aria-label="Plan segmentów Osiedle Ziętka"
       >
         {
@@ -50,22 +65,25 @@ import { units, statusLabel, site } from '../data/site';
                 : unit.status === 'reserved'
                   ? 'border-warn/70 bg-warn/10 hover:bg-warn/20'
                   : 'border-line bg-surface/40 opacity-60';
+            const isDefault = unit.id === defaultUnit.id;
             return (
-              <a
-                href={`#segment-${unit.id}`}
-                role="listitem"
+              <button
+                type="button"
+                role="option"
+                aria-selected={isDefault ? 'true' : 'false'}
+                data-unit-select={unit.id}
                 class:list={[
-                  'group flex aspect-[3/5] flex-col justify-between rounded-md border p-2 transition',
+                  'group flex aspect-[3/5] flex-col justify-between rounded-md border p-2 text-left transition',
                   tone,
+                  isDefault ? 'ring-2 ring-accent ring-offset-2 ring-offset-ink' : '',
                 ]}
-                data-unit={unit.id}
               >
                 <span class="font-display text-lg font-bold text-sand">{unit.id}</span>
                 <span class="text-[10px] leading-tight text-muted">
                   {unit.area} m²
                   {unit.note ? ` · ${unit.note}` : ''}
                 </span>
-              </a>
+              </button>
             );
           })
         }
@@ -73,29 +91,282 @@ import { units, statusLabel, site } from '../data/site';
       <p class="mt-4 text-center text-xs text-muted">ULICA ZIĘTKA</p>
     </div>
 
-    <div class="reveal mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-      {
-        units.map((unit) => (
+    <div
+      id="unit-panel"
+      class="reveal mt-8 scroll-mt-28 overflow-hidden rounded-xl border border-line bg-ink/70"
+      data-active-unit={defaultUnit.id}
+    >
+      <div class="flex flex-col gap-6 p-4 sm:p-6 lg:flex-row lg:items-start">
+        <div class="min-w-0 flex-1">
           <div
-            id={`segment-${unit.id}`}
-            class="scroll-mt-28 border-b border-line/80 py-3 sm:border-b-0 sm:border-l sm:border-line/80 sm:pl-4"
+            id="unit-main-wrap"
+            class="relative overflow-hidden rounded-lg border border-line bg-surface"
           >
-            <p class="font-display text-lg font-bold text-sand">
-              Segment {unit.id}
-              <span class="ml-2 text-sm font-medium text-muted">
-                {statusLabel[unit.status]}
-              </span>
-            </p>
-            <p class="mt-1 text-sm text-muted">
-              {unit.area} m² powierzchni użytkowej
-              {unit.note ? ` (${unit.note})` : ''}
-            </p>
-            <a href="#cennik" class="mt-2 inline-block text-sm font-semibold text-accent hover:text-accent-hot">
-              Zobacz w cenniku →
+            {
+              defaultPrimary ? (
+                <button
+                  type="button"
+                  id="unit-main-open"
+                  class="block w-full cursor-zoom-in"
+                  aria-label="Powiększ rzut"
+                >
+                  <img
+                    id="unit-main-img"
+                    src={defaultPrimary.src}
+                    alt={`Segment ${defaultUnit.id} — ${defaultPrimary.label}`}
+                    class="max-h-[560px] w-full object-contain bg-ink"
+                    loading="eager"
+                  />
+                </button>
+              ) : (
+                <div
+                  id="unit-main-placeholder"
+                  class="flex aspect-[4/3] flex-col items-center justify-center gap-2 px-6 text-center"
+                >
+                  <p class="font-display text-xl font-bold text-sand">Materiały graficzne wkrótce</p>
+                  <p class="text-sm text-muted">
+                    Rzut segmentu zostanie dodany po otrzymaniu finalnych plików.
+                  </p>
+                </div>
+              )
+            }
+          </div>
+
+          <div
+            id="unit-thumbs"
+            class="mt-3 flex gap-2 overflow-x-auto pb-1"
+            role="tablist"
+            aria-label="Warianty rzutu"
+          >
+            {
+              defaultUnit.images.map((img, i) => (
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={i === 0 ? 'true' : 'false'}
+                  data-thumb-src={img.src}
+                  data-thumb-label={img.label}
+                  class:list={[
+                    'unit-thumb shrink-0 overflow-hidden rounded-md border transition',
+                    i === 0 ? 'border-accent ring-1 ring-accent' : 'border-line hover:border-accent/60',
+                  ]}
+                >
+                  <img
+                    src={img.src}
+                    alt={img.label}
+                    class="h-16 w-24 object-cover object-top"
+                    loading="lazy"
+                  />
+                </button>
+              ))
+            }
+          </div>
+        </div>
+
+        <div class="w-full shrink-0 lg:w-72">
+          <p class="text-xs uppercase tracking-wide text-muted">Wybrany segment</p>
+          <h3 id="unit-title" class="mt-1 font-display text-3xl font-bold text-sand">
+            Segment {defaultUnit.id}
+          </h3>
+          <p id="unit-status" class="mt-2 text-sm font-semibold text-accent">
+            {statusLabel[defaultUnit.status]}
+          </p>
+          <p id="unit-meta" class="mt-3 text-muted">
+            {defaultUnit.area} m² powierzchni użytkowej
+            {defaultUnit.note ? ` (${defaultUnit.note})` : ''}
+          </p>
+          <p id="unit-image-label" class="mt-2 text-xs text-muted">
+            {defaultPrimary?.label ?? ''}
+          </p>
+
+          <div class="mt-6 flex flex-col gap-2">
+            <a
+              href="#cennik"
+              class="inline-flex items-center justify-center rounded-md bg-accent px-4 py-3 text-sm font-bold text-ink transition hover:bg-accent-hot"
+            >
+              Zobacz w cenniku
+            </a>
+            <a
+              id="unit-contact"
+              href="#kontakt"
+              class="inline-flex items-center justify-center rounded-md border border-line px-4 py-3 text-sm font-semibold text-sand transition hover:border-accent hover:text-accent"
+            >
+              Zapytaj o ten segment
             </a>
           </div>
-        ))
-      }
+        </div>
+      </div>
     </div>
   </div>
 </section>
+
+<dialog
+  id="unit-lightbox"
+  class="m-auto max-h-[94dvh] w-[min(98vw,1200px)] border-0 bg-transparent p-0 backdrop:bg-ink/90"
+>
+  <form method="dialog" class="absolute right-2 top-2 z-10">
+    <button
+      type="submit"
+      class="rounded-md bg-ink/80 px-3 py-2 text-sm font-semibold text-sand ring-1 ring-line"
+      aria-label="Zamknij"
+    >
+      Zamknij
+    </button>
+  </form>
+  <img id="unit-lightbox-img" src="" alt="" class="max-h-[94dvh] w-full object-contain" />
+</dialog>
+
+<script define:vars={{ unitsJson, defaultUnitId: defaultUnit.id }}>
+  const units = JSON.parse(unitsJson);
+  let activeId = defaultUnitId;
+  let activeSrc = '';
+
+  const panel = document.getElementById('unit-panel');
+  const titleEl = document.getElementById('unit-title');
+  const statusEl = document.getElementById('unit-status');
+  const metaEl = document.getElementById('unit-meta');
+  const labelEl = document.getElementById('unit-image-label');
+  const mainWrap = document.getElementById('unit-main-wrap');
+  const thumbsEl = document.getElementById('unit-thumbs');
+  const contactEl = document.getElementById('unit-contact');
+  const lightbox = document.getElementById('unit-lightbox');
+  const lightboxImg = document.getElementById('unit-lightbox-img');
+
+  function getUnit(id) {
+    return units.find((u) => u.id === id);
+  }
+
+  function openLightbox() {
+    if (!activeSrc || !(lightbox instanceof HTMLDialogElement)) return;
+    if (lightboxImg instanceof HTMLImageElement) {
+      lightboxImg.src = activeSrc;
+      lightboxImg.alt = labelEl?.textContent || '';
+    }
+    lightbox.showModal();
+  }
+
+  function setMainImage(src, label, alt) {
+    activeSrc = src || '';
+    if (labelEl) labelEl.textContent = label || '';
+
+    mainWrap.innerHTML = '';
+
+    if (!src) {
+      const ph = document.createElement('div');
+      ph.id = 'unit-main-placeholder';
+      ph.className =
+        'flex aspect-[4/3] flex-col items-center justify-center gap-2 px-6 text-center';
+      ph.innerHTML =
+        '<p class="font-display text-xl font-bold text-sand">Materiały graficzne wkrótce</p><p class="text-sm text-muted">Rzut segmentu zostanie dodany po otrzymaniu finalnych plików.</p>';
+      mainWrap.appendChild(ph);
+      return;
+    }
+
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.id = 'unit-main-open';
+    btn.className = 'block w-full cursor-zoom-in';
+    btn.setAttribute('aria-label', 'Powiększ rzut');
+    const img = document.createElement('img');
+    img.id = 'unit-main-img';
+    img.src = src;
+    img.alt = alt || label || '';
+    img.className = 'max-h-[560px] w-full object-contain bg-ink';
+    img.loading = 'lazy';
+    btn.appendChild(img);
+    btn.addEventListener('click', openLightbox);
+    mainWrap.appendChild(btn);
+  }
+
+  function renderThumbs(unit) {
+    thumbsEl.innerHTML = '';
+    unit.images.forEach((img, i) => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.setAttribute('role', 'tab');
+      btn.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
+      btn.className =
+        'unit-thumb shrink-0 overflow-hidden rounded-md border transition ' +
+        (i === 0 ? 'border-accent ring-1 ring-accent' : 'border-line hover:border-accent/60');
+      const thumb = document.createElement('img');
+      thumb.src = img.src;
+      thumb.alt = img.label;
+      thumb.className = 'h-16 w-24 object-cover object-top';
+      thumb.loading = 'lazy';
+      btn.appendChild(thumb);
+      btn.addEventListener('click', () => {
+        thumbsEl.querySelectorAll('.unit-thumb').forEach((el) => {
+          el.classList.remove('border-accent', 'ring-1', 'ring-accent');
+          el.classList.add('border-line');
+          el.setAttribute('aria-selected', 'false');
+        });
+        btn.classList.add('border-accent', 'ring-1', 'ring-accent');
+        btn.classList.remove('border-line');
+        btn.setAttribute('aria-selected', 'true');
+        setMainImage(img.src, img.label, `Segment ${unit.id} — ${img.label}`);
+      });
+      thumbsEl.appendChild(btn);
+    });
+  }
+
+  function selectUnit(id) {
+    const unit = getUnit(id);
+    if (!unit) return;
+    activeId = id;
+    panel.dataset.activeUnit = String(id);
+
+    document.querySelectorAll('[data-unit-select]').forEach((el) => {
+      const selected = Number(el.dataset.unitSelect) === id;
+      el.setAttribute('aria-selected', selected ? 'true' : 'false');
+      el.classList.toggle('ring-2', selected);
+      el.classList.toggle('ring-accent', selected);
+      el.classList.toggle('ring-offset-2', selected);
+      el.classList.toggle('ring-offset-ink', selected);
+    });
+
+    titleEl.textContent = `Segment ${unit.id}`;
+    statusEl.textContent = unit.statusLabel;
+    metaEl.textContent =
+      `${unit.area} m² powierzchni użytkowej` + (unit.note ? ` (${unit.note})` : '');
+    contactEl.href = '#kontakt';
+
+    const primary = unit.primary;
+    setMainImage(
+      primary?.src ?? '',
+      primary?.label ?? '',
+      primary ? `Segment ${unit.id} — ${primary.label}` : '',
+    );
+    renderThumbs(unit);
+  }
+
+  document.querySelectorAll('[data-unit-select]').forEach((el) => {
+    el.addEventListener('click', () => selectUnit(Number(el.dataset.unitSelect)));
+  });
+
+  // Wire initial thumb clicks (SSR markup)
+  thumbsEl?.querySelectorAll('.unit-thumb').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const src = btn.getAttribute('data-thumb-src');
+      const label = btn.getAttribute('data-thumb-label') || '';
+      if (!src) return;
+      thumbsEl.querySelectorAll('.unit-thumb').forEach((el) => {
+        el.classList.remove('border-accent', 'ring-1', 'ring-accent');
+        el.classList.add('border-line');
+        el.setAttribute('aria-selected', 'false');
+      });
+      btn.classList.add('border-accent', 'ring-1', 'ring-accent');
+      btn.classList.remove('border-line');
+      btn.setAttribute('aria-selected', 'true');
+      setMainImage(src, label, `Segment ${activeId} — ${label}`);
+    });
+  });
+
+  document.getElementById('unit-main-open')?.addEventListener('click', openLightbox);
+
+  lightbox?.addEventListener('click', (event) => {
+    if (event.target === lightbox && lightbox instanceof HTMLDialogElement) lightbox.close();
+  });
+
+  const initial = getUnit(activeId);
+  activeSrc = initial?.primary?.src ?? '';
+</script>

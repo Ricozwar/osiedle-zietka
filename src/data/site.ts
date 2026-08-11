@@ -1,10 +1,19 @@
 export type UnitStatus = 'available' | 'reserved' | 'sold';
 
+export type UnitImageKind = 'marketing' | 'plan' | 'attic' | 'map';
+
+export interface UnitImage {
+  src: string;
+  label: string;
+  kind: UnitImageKind;
+}
+
 export interface Unit {
   id: number;
   area: number;
   note?: string;
   status: UnitStatus;
+  images: UnitImage[];
 }
 
 export interface GalleryImage {
@@ -18,6 +27,10 @@ export function asset(path: string): string {
   const rawBase = import.meta.env.BASE_URL ?? '/';
   const base = rawBase.endsWith('/') ? rawBase : `${rawBase}/`;
   return `${base}${path.replace(/^\//, '')}`;
+}
+
+function seg(id: number, file: string): string {
+  return asset(`images/segments/${id}/${file}`);
 }
 
 export const site = {
@@ -40,6 +53,8 @@ export const site = {
   },
   documentsUpdated: '2026-08-10',
   areaRange: 'ok. 40–77 m²',
+  /** Domyślnie zaznaczony segment w sekcji Plan (pierwszy dostępny) */
+  defaultUnitId: 3,
   get heroImage() {
     return asset('images/hero.jpg');
   },
@@ -96,19 +111,121 @@ export const gallery: GalleryImage[] = [
   },
 ];
 
-/** Statusy i metraże wstępne z materiałów FB — ceny wyłącznie z publikatorcen.pl */
+const shared78: UnitImage[] = [
+  { src: seg(7, 'marketing-3d.png'), label: 'Rzut 3D', kind: 'marketing' },
+  { src: seg(7, 'marketing.png'), label: 'Parter i poddasze', kind: 'marketing' },
+  { src: seg(7, 'plan-parter.png'), label: 'Rzut parteru', kind: 'plan' },
+  { src: seg(7, 'plan.png'), label: 'Rzut techniczny', kind: 'plan' },
+];
+
+/** Statusy i metraże wstępne — ceny wyłącznie z publikatorcen.pl */
 export const units: Unit[] = [
-  { id: 1, area: 43, status: 'reserved' },
-  { id: 2, area: 51, status: 'reserved' },
-  { id: 3, area: 40, status: 'available' },
-  { id: 4, area: 44, status: 'reserved' },
-  { id: 5, area: 44, status: 'reserved' },
-  { id: 6, area: 48, note: 'strych', status: 'reserved' },
-  { id: 7, area: 54, status: 'reserved' },
-  { id: 8, area: 54, status: 'reserved' },
-  { id: 9, area: 68, status: 'reserved' },
-  { id: 10, area: 77, status: 'available' },
-  { id: 11, area: 74, status: 'available' },
+  {
+    id: 1,
+    area: 43,
+    status: 'reserved',
+    images: [
+      { src: seg(1, 'marketing-3d.png'), label: 'Rzut 3D', kind: 'marketing' },
+      { src: seg(1, 'marketing.png'), label: 'Rzut marketingowy', kind: 'marketing' },
+      { src: seg(1, 'plan.png'), label: 'Rzut techniczny', kind: 'plan' },
+    ],
+  },
+  {
+    id: 2,
+    area: 51,
+    status: 'reserved',
+    images: [],
+  },
+  {
+    id: 3,
+    area: 40,
+    status: 'available',
+    images: [
+      { src: seg(3, 'marketing-3d.png'), label: 'Rzut 3D', kind: 'marketing' },
+      { src: seg(3, 'marketing.png'), label: 'Rzut marketingowy', kind: 'marketing' },
+      { src: seg(3, 'plan.png'), label: 'Rzut techniczny', kind: 'plan' },
+    ],
+  },
+  {
+    id: 4,
+    area: 44,
+    status: 'reserved',
+    images: [
+      { src: seg(4, 'marketing-3d.png'), label: 'Rzut 3D', kind: 'marketing' },
+      { src: seg(4, 'marketing.png'), label: 'Rzut marketingowy', kind: 'marketing' },
+      { src: seg(4, 'plan.png'), label: 'Rzut techniczny', kind: 'plan' },
+    ],
+  },
+  {
+    id: 5,
+    area: 44,
+    status: 'reserved',
+    images: [
+      { src: seg(5, 'marketing-3d.png'), label: 'Rzut 3D', kind: 'marketing' },
+      { src: seg(5, 'marketing.png'), label: 'Rzut marketingowy', kind: 'marketing' },
+      { src: seg(5, 'marketing-alt.png'), label: 'Wariant rzutu', kind: 'marketing' },
+      { src: seg(5, 'plan.png'), label: 'Rzut techniczny', kind: 'plan' },
+    ],
+  },
+  {
+    id: 6,
+    area: 48,
+    note: 'strych',
+    status: 'reserved',
+    images: [
+      { src: seg(6, 'marketing-3d.png'), label: 'Rzut 3D', kind: 'marketing' },
+      { src: seg(6, 'marketing.png'), label: 'Rzut marketingowy', kind: 'marketing' },
+      { src: seg(6, 'plan.png'), label: 'Rzut techniczny', kind: 'plan' },
+    ],
+  },
+  {
+    id: 7,
+    area: 54,
+    note: 'parter + poddasze',
+    status: 'reserved',
+    images: shared78,
+  },
+  {
+    id: 8,
+    area: 54,
+    note: 'parter + poddasze',
+    status: 'reserved',
+    images: shared78.map((img) => ({
+      ...img,
+      src: img.src.replace(`/segments/7/`, `/segments/8/`),
+    })),
+  },
+  {
+    id: 9,
+    area: 68,
+    status: 'reserved',
+    images: [
+      { src: seg(9, 'marketing.png'), label: 'Rzut marketingowy', kind: 'marketing' },
+      { src: seg(9, 'marketing-3d.png'), label: 'Rzut 3D', kind: 'marketing' },
+      { src: seg(9, 'marketing-alt.png'), label: 'Wariant rzutu', kind: 'marketing' },
+    ],
+  },
+  {
+    id: 10,
+    area: 77,
+    status: 'available',
+    images: [
+      { src: seg(10, 'marketing-3d.png'), label: 'Rzut 3D', kind: 'marketing' },
+      { src: seg(10, 'marketing.png'), label: 'Rzut marketingowy', kind: 'marketing' },
+      { src: seg(10, 'marketing-alt.png'), label: 'Wariant rzutu', kind: 'marketing' },
+      { src: seg(10, 'plan.png'), label: 'Rzut techniczny', kind: 'plan' },
+    ],
+  },
+  {
+    id: 11,
+    area: 74,
+    status: 'available',
+    images: [
+      { src: seg(11, 'marketing.png'), label: 'Rzut marketingowy', kind: 'marketing' },
+      { src: seg(11, 'marketing-3d.png'), label: 'Rzut 3D', kind: 'marketing' },
+      { src: seg(11, 'plan.png'), label: 'Rzut techniczny', kind: 'plan' },
+    ],
+  },
 ];
 
 export const statusLabel: Record<UnitStatus, string> = {
@@ -116,3 +233,11 @@ export const statusLabel: Record<UnitStatus, string> = {
   reserved: 'Rezerwacja',
   sold: 'Sprzedany',
 };
+
+export function primaryUnitImage(unit: Unit): UnitImage | undefined {
+  return (
+    unit.images.find((img) => img.kind === 'marketing') ??
+    unit.images.find((img) => img.kind === 'plan') ??
+    unit.images[0]
+  );
+}
