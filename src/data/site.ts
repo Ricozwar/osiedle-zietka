@@ -174,7 +174,6 @@ export const units: Unit[] = [
   {
     id: 6,
     area: 48,
-    note: 'strych',
     status: 'reserved',
     images: [
       { src: seg(6, 'marketing-3d.png'), label: 'Rzut 3D', kind: 'marketing' },
