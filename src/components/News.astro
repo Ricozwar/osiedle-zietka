@@ -1,8 +1,7 @@
 ---
 import { site } from '../data/site';
 
-const fbHref = encodeURIComponent(site.facebook);
-const pluginSrc = `https://www.facebook.com/plugins/page.php?href=${fbHref}&tabs=timeline&width=500&height=600&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=false&locale=pl_PL`;
+const fbPageUrl = site.facebook;
 ---
 
 <section id="aktualnosci" class="scroll-mt-20 border-t border-line/60 bg-ink-soft/40 py-20 sm:py-28">
@@ -18,7 +17,7 @@ const pluginSrc = `https://www.facebook.com/plugins/page.php?href=${fbHref}&tabs
       </p>
     </div>
 
-    <div class="reveal mt-10 mx-auto max-w-[500px]">
+    <div class="reveal mt-10 mx-auto w-full max-w-[500px]">
       <div
         id="fb-news-gate"
         class="rounded-xl border border-line bg-ink/60 p-8 text-center"
@@ -46,20 +45,25 @@ const pluginSrc = `https://www.facebook.com/plugins/page.php?href=${fbHref}&tabs
         </div>
       </div>
 
-      <div id="fb-news-embed" class="hidden overflow-hidden rounded-xl border border-line bg-ink">
-        <iframe
-          id="fb-news-iframe"
-          title="Aktualności Facebook — Osiedle Ziętka"
-          src=""
-          data-src={pluginSrc}
-          width="500"
-          height="600"
-          class="mx-auto w-full max-w-[500px] border-0"
-          style="border:none;overflow:hidden"
-          scrolling="no"
-          allow="encrypted-media; clipboard-write"
-          loading="lazy"
-        ></iframe>
+      <div
+        id="fb-news-embed"
+        class="hidden rounded-xl border border-line bg-ink"
+        data-fb-page={fbPageUrl}
+      >
+        <div id="fb-news-frame-wrap" class="mx-auto w-full">
+          <iframe
+            id="fb-news-iframe"
+            title="Aktualności Facebook — Osiedle Ziętka"
+            src=""
+            width="500"
+            height="700"
+            class="mx-auto block w-full border-0"
+            style="border:none;overflow:visible"
+            scrolling="no"
+            allow="encrypted-media; clipboard-write"
+            loading="lazy"
+          ></iframe>
+        </div>
         <p class="border-t border-line px-4 py-3 text-center text-xs text-muted">
           Nie widać postów?
           <a
@@ -80,17 +84,60 @@ const pluginSrc = `https://www.facebook.com/plugins/page.php?href=${fbHref}&tabs
   const KEY = 'oz-cookies-ok';
   const gate = document.getElementById('fb-news-gate');
   const embed = document.getElementById('fb-news-embed');
+  const wrap = document.getElementById('fb-news-frame-wrap');
   const iframe = document.getElementById('fb-news-iframe');
   const acceptBtn = document.getElementById('fb-news-accept');
 
+  let lastWidth = 0;
+  let resizeTimer = 0;
+
+  function clamp(n, min, max) {
+    return Math.min(max, Math.max(min, n));
+  }
+
+  function pluginSrc(width, height) {
+    const page = embed?.getAttribute('data-fb-page') || '';
+    const params = new URLSearchParams({
+      href: page,
+      tabs: 'timeline',
+      width: String(width),
+      height: String(height),
+      small_header: 'false',
+      adapt_container_width: 'true',
+      hide_cover: 'false',
+      show_facepile: 'false',
+      locale: 'pl_PL',
+    });
+    return `https://www.facebook.com/plugins/page.php?${params.toString()}`;
+  }
+
+  function measureWidth() {
+    const raw = wrap?.clientWidth || embed?.clientWidth || window.innerWidth - 32;
+    return clamp(Math.floor(raw), 180, 500);
+  }
+
+  function measureHeight() {
+    return window.innerWidth < 768 ? 800 : 700;
+  }
+
+  function applyPlugin(force) {
+    if (!iframe || !embed || embed.classList.contains('hidden')) return;
+    const width = measureWidth();
+    const height = measureHeight();
+    if (!force && width === lastWidth) return;
+    lastWidth = width;
+    iframe.setAttribute('width', String(width));
+    iframe.setAttribute('height', String(height));
+    iframe.style.width = `${width}px`;
+    iframe.style.height = `${height}px`;
+    iframe.setAttribute('src', pluginSrc(width, height));
+  }
+
   function showFeed() {
-    if (!iframe || !gate || !embed) return;
-    const src = iframe.getAttribute('data-src');
-    if (src && !iframe.getAttribute('src')) {
-      iframe.setAttribute('src', src);
-    }
+    if (!gate || !embed) return;
     gate.classList.add('hidden');
     embed.classList.remove('hidden');
+    requestAnimationFrame(() => applyPlugin(true));
   }
 
   function acceptAndShow() {
@@ -106,4 +153,17 @@ const pluginSrc = `https://www.facebook.com/plugins/page.php?href=${fbHref}&tabs
 
   acceptBtn?.addEventListener('click', acceptAndShow);
   window.addEventListener('oz-cookies-accepted', showFeed);
+
+  window.addEventListener('resize', () => {
+    window.clearTimeout(resizeTimer);
+    resizeTimer = window.setTimeout(() => applyPlugin(false), 200);
+  });
+
+  if (wrap && typeof ResizeObserver !== 'undefined') {
+    const ro = new ResizeObserver(() => {
+      window.clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(() => applyPlugin(false), 200);
+    });
+    ro.observe(wrap);
+  }
 </script>

@@ -46,7 +46,7 @@ import { gallery } from '../data/site';
 
 <dialog
   id="gallery-lightbox"
-  class="m-auto max-h-[92dvh] w-[min(96vw,1100px)] border-0 bg-transparent p-0 backdrop:bg-ink/90"
+  class="m-auto max-h-[94dvh] w-[min(100vw,1100px)] border-0 bg-transparent p-0 backdrop:bg-ink/90"
 >
   <form method="dialog" class="absolute right-2 top-2 z-10">
     <button
@@ -57,7 +57,12 @@ import { gallery } from '../data/site';
       Zamknij
     </button>
   </form>
-  <img id="gallery-lightbox-img" src="" alt="" class="max-h-[92dvh] w-full object-contain" />
+  <img
+    id="gallery-lightbox-img"
+    src=""
+    alt=""
+    class="max-h-[90dvh] max-w-full w-full object-contain"
+  />
 </dialog>
 
 <script>

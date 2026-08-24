@@ -29,11 +29,11 @@ const unitsJson = JSON.stringify(
       </p>
     </div>
 
-    <figure class="reveal mt-10 overflow-hidden rounded-xl border border-line bg-ink">
+    <figure class="reveal mt-10 rounded-xl border border-line bg-ink">
       <img
         src={site.planImage}
         alt="Plan lokalizacji Osiedle Ziętka — Knurów"
-        class="w-full object-cover object-center"
+        class="h-auto w-full object-contain"
         loading="lazy"
       />
     </figure>
@@ -93,14 +93,14 @@ const unitsJson = JSON.stringify(
 
     <div
       id="unit-panel"
-      class="reveal mt-8 scroll-mt-28 overflow-hidden rounded-xl border border-line bg-ink/70"
+      class="reveal mt-8 scroll-mt-28 rounded-xl border border-line bg-ink/70"
       data-active-unit={defaultUnit.id}
     >
       <div class="flex flex-col gap-6 p-4 sm:p-6 lg:flex-row lg:items-start">
         <div class="min-w-0 flex-1">
           <div
             id="unit-main-wrap"
-            class="relative overflow-hidden rounded-lg border border-line bg-surface"
+            class="relative rounded-lg border border-line bg-surface"
           >
             {
               defaultPrimary ? (
@@ -114,7 +114,7 @@ const unitsJson = JSON.stringify(
                     id="unit-main-img"
                     src={defaultPrimary.src}
                     alt={`Segment ${defaultUnit.id} — ${defaultPrimary.label}`}
-                    class="max-h-[560px] w-full object-contain bg-ink"
+                    class="max-h-[min(70dvh,560px)] w-full object-contain bg-ink"
                     loading="eager"
                   />
                 </button>
@@ -202,7 +202,7 @@ const unitsJson = JSON.stringify(
 
 <dialog
   id="unit-lightbox"
-  class="m-auto max-h-[94dvh] w-[min(98vw,1200px)] border-0 bg-transparent p-0 backdrop:bg-ink/90"
+  class="m-auto max-h-[94dvh] w-[min(100vw,1200px)] border-0 bg-transparent p-0 backdrop:bg-ink/90"
 >
   <form method="dialog" class="absolute right-2 top-2 z-10">
     <button
@@ -213,7 +213,12 @@ const unitsJson = JSON.stringify(
       Zamknij
     </button>
   </form>
-  <img id="unit-lightbox-img" src="" alt="" class="max-h-[94dvh] w-full object-contain" />
+  <img
+    id="unit-lightbox-img"
+    src=""
+    alt=""
+    class="max-h-[90dvh] max-w-full w-full object-contain"
+  />
 </dialog>
 
 <script define:vars={{ unitsJson, defaultUnitId: defaultUnit.id }}>
@@ -271,7 +276,7 @@ const unitsJson = JSON.stringify(
     img.id = 'unit-main-img';
     img.src = src;
     img.alt = alt || label || '';
-    img.className = 'max-h-[560px] w-full object-contain bg-ink';
+    img.className = 'max-h-[min(70dvh,560px)] w-full object-contain bg-ink';
     img.loading = 'lazy';
     btn.appendChild(img);
     btn.addEventListener('click', openLightbox);

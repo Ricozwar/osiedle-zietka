@@ -29,7 +29,40 @@ import { units, statusLabel, site } from '../data/site';
       </p>
     </div>
 
-    <div class="reveal mt-8 overflow-x-auto rounded-xl border border-line">
+    <!-- Mobile: cards -->
+    <div class="reveal mt-8 space-y-3 md:hidden" aria-label="Lista segmentów Osiedle Ziętka">
+      {
+        units.map((unit) => (
+          <article class="rounded-xl border border-line bg-ink/70 p-4">
+            <div class="flex items-baseline justify-between gap-3">
+              <h3 class="font-display text-xl font-bold text-sand">Segment {unit.id}</h3>
+              <p class="text-base font-semibold text-accent">{statusLabel[unit.status]}</p>
+            </div>
+            <dl class="mt-4 space-y-3 text-base">
+              <div class="flex justify-between gap-4 border-t border-line/60 pt-3">
+                <dt class="text-muted">Pow. użytkowa</dt>
+                <dd class="text-right font-medium text-sand">{unit.area} m²</dd>
+              </div>
+              <div class="flex justify-between gap-4 border-t border-line/60 pt-3">
+                <dt class="text-muted">Cena brutto / m²</dt>
+                <dd class="text-right font-medium text-sand">— (Publikator Cen)</dd>
+              </div>
+              <div class="flex justify-between gap-4 border-t border-line/60 pt-3">
+                <dt class="text-muted">Cena całkowita brutto</dt>
+                <dd class="text-right font-medium text-sand">— (Publikator Cen)</dd>
+              </div>
+              <div class="flex justify-between gap-4 border-t border-line/60 pt-3">
+                <dt class="text-muted">Przynależności</dt>
+                <dd class="text-right font-medium text-sand">— (Publikator Cen)</dd>
+              </div>
+            </dl>
+          </article>
+        ))
+      }
+    </div>
+
+    <!-- Desktop: table -->
+    <div class="reveal mt-8 hidden overflow-x-auto rounded-xl border border-line md:block">
       <table class="min-w-full text-left text-sm">
         <caption class="sr-only">
           Wstępna lista segmentów Osiedle Ziętka — ceny zostaną uzupełnione z publikatorcen.pl
