@@ -17,7 +17,7 @@ const inv = site.investment;
     </div>
 
     <dl class="reveal mt-10 grid gap-6 sm:grid-cols-2">
-      <div class="border-t border-line pt-4">
+      <div class="border-t border-line pt-4 sm:col-span-2">
         <dt class="text-xs uppercase tracking-wide text-muted">Firma</dt>
         <dd class="mt-2 text-sand">{d.name}</dd>
       </div>
@@ -26,12 +26,24 @@ const inv = site.investment;
         <dd class="mt-2 text-sand">{d.legalForm}</dd>
       </div>
       <div class="border-t border-line pt-4">
+        <dt class="text-xs uppercase tracking-wide text-muted">Status</dt>
+        <dd class="mt-2 text-sand">Aktywna</dd>
+      </div>
+      <div class="border-t border-line pt-4">
         <dt class="text-xs uppercase tracking-wide text-muted">NIP</dt>
         <dd class="mt-2 text-sand">{d.nip}</dd>
       </div>
       <div class="border-t border-line pt-4">
         <dt class="text-xs uppercase tracking-wide text-muted">REGON</dt>
         <dd class="mt-2 text-sand">{d.regon}</dd>
+      </div>
+      <div class="border-t border-line pt-4">
+        <dt class="text-xs uppercase tracking-wide text-muted">KRS</dt>
+        <dd class="mt-2 text-sand">{d.krs}</dd>
+      </div>
+      <div class="border-t border-line pt-4">
+        <dt class="text-xs uppercase tracking-wide text-muted">Kapitał zakładowy</dt>
+        <dd class="mt-2 text-sand">{d.shareCapital}</dd>
       </div>
       <div class="border-t border-line pt-4 sm:col-span-2">
         <dt class="text-xs uppercase tracking-wide text-muted">

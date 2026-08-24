@@ -46,9 +46,11 @@ export const site = {
   developer: {
     name: 'STM DEVELOPMENT Sp. z o.o.',
     legalForm: 'Spółka z ograniczoną odpowiedzialnością',
-    nip: '969 166 54 38',
-    regon: 'Do uzupełnienia',
-    seat: 'Do uzupełnienia',
+    nip: '969 165 05 72',
+    regon: '521413440',
+    krs: '0000957256',
+    shareCapital: '5 000,00 zł',
+    seat: 'ul. Kazimierza Wielkiego 9B/7, 44-194 Knurów',
     salesOffice: 'Do uzupełnienia',
   },
   investment: {
