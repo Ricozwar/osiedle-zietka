@@ -1,22 +1,22 @@
 ---
-import { asset } from '../data/site';
+import { asset, site } from '../data/site';
 
 const items = [
   {
-    title: 'Konstrukcja',
-    text: 'Płyta fundamentowa, mury z pustaka ceramicznego, ocieplenie 20 cm styropianem, elewacja tynkowana.',
-  },
-  {
-    title: 'Dach i stolarka',
-    text: 'Dach dwuspadowy, dachówka betonowa grafitowa, okna 3-szybowe. Rolety zewnętrzne jako opcja dodatkowa.',
-  },
-  {
     title: 'Instalacje',
-    text: 'Ogrzewanie podłogowe z kotłem gazowym Vaillant, pełna instalacja elektryczna oraz wodno-kanalizacyjna.',
+    text: 'Ogrzewanie podłogowe, indywidualne ogrzewanie gazowe, instalacja elektryczna, wodno-kanalizacyjna oraz centralnego ogrzewania.',
   },
   {
-    title: 'Ogród, taras, parking',
-    text: 'Własny ogródek i taras, 2 miejsca postojowe, droga wewnętrzna z kostki, osiedle zamknięte z 2 bramami.',
+    title: 'Wykończenie stanu deweloperskiego',
+    text: 'Tynki wewnętrzne, wylewki, stolarka okienna i drzwiowa oraz elewacja budynków.',
+  },
+  {
+    title: 'Parking i dojazd',
+    text: 'Dwa miejsca postojowe dla lokalu oraz droga wewnętrzna wykonana z kostki brukowej.',
+  },
+  {
+    title: 'Teren inwestycji',
+    text: 'Zagospodarowanie terenu inwestycji w ramach stanu deweloperskiego.',
   },
 ];
 ---
@@ -27,13 +27,16 @@ const items = [
       <div class="max-w-2xl">
         <p class="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-accent">Segmenty i standard</p>
         <h2 class="font-display text-3xl font-bold tracking-tight text-sand sm:text-5xl text-balance">
-          To, co dostajesz wraz z kluczem.
+          Stan deweloperski — to, co dostajesz wraz z kluczem.
         </h2>
+        <p class="mt-4 text-muted">
+          Zakres wykończenia zgodnie z prospektem informacyjnym przedsięwzięcia Osiedle Ziętka.
+        </p>
       </div>
       <img
         src={asset('images/gallery/08-standard.jpg')}
         alt="Standard wykończenia lokali Osiedle Ziętka"
-        class="reveal w-full rounded-xl border border-line object-cover"
+        class="reveal h-auto w-full rounded-xl border border-line object-contain"
         loading="lazy"
       />
     </div>
@@ -48,5 +51,16 @@ const items = [
         ))
       }
     </div>
+
+    <ul class="reveal mt-10 columns-1 gap-x-10 space-y-2 sm:columns-2">
+      {
+        site.investment.finishStandard.map((item) => (
+          <li class="break-inside-avoid flex gap-3 text-sand/90">
+            <span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" aria-hidden="true" />
+            <span>{item}</span>
+          </li>
+        ))
+      }
+    </ul>
   </div>
 </section>

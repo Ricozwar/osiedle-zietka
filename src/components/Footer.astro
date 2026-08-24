@@ -20,7 +20,8 @@ import { site, asset } from '../data/site';
         <a href={`mailto:${site.email}`} class="hover:text-accent">{site.email}</a>
       </p>
       <p class="mt-2">{site.developer.name}</p>
-      <p>{site.developer.seat}</p>
+      <p>NIP {site.developer.nip}</p>
+      {site.developer.seat !== 'Do uzupełnienia' ? <p>{site.developer.seat}</p> : null}
     </div>
     <div class="text-sm">
       <p class="font-semibold text-sand">Informacje</p>

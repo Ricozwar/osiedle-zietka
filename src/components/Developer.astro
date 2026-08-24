@@ -1,6 +1,7 @@
 ---
 import { site } from '../data/site';
 const d = site.developer;
+const inv = site.investment;
 ---
 
 <section id="deweloper" class="scroll-mt-20 border-t border-line/60 py-20 sm:py-28">
@@ -11,7 +12,7 @@ const d = site.developer;
         Dane sprzedającego
       </h2>
       <p class="mt-4 text-muted">
-        Informacje wymagane art. 19a — uzupełnimy pełnymi danymi z prospektu informacyjnego.
+        Informacje o deweloperze i przedsięwzięciu zgodnie z art. 19a ustawy deweloperskiej.
       </p>
     </div>
 
@@ -52,6 +53,41 @@ const d = site.developer;
         <dt class="text-xs uppercase tracking-wide text-muted">E-mail</dt>
         <dd class="mt-2">
           <a class="text-accent hover:text-accent-hot" href={`mailto:${site.email}`}>{site.email}</a>
+        </dd>
+      </div>
+    </dl>
+
+    <h3 class="reveal mt-14 font-display text-2xl font-bold text-sand">Przedsięwzięcie deweloperskie</h3>
+    <dl class="reveal mt-6 grid gap-6 sm:grid-cols-2">
+      <div class="border-t border-line pt-4">
+        <dt class="text-xs uppercase tracking-wide text-muted">Numer księgi wieczystej</dt>
+        <dd class="mt-2 text-sand">{inv.landRegister}</dd>
+      </div>
+      <div class="border-t border-line pt-4">
+        <dt class="text-xs uppercase tracking-wide text-muted">Pozwolenie na budowę</dt>
+        <dd class="mt-2 text-sand">{inv.buildingPermit}</dd>
+      </div>
+      <div class="border-t border-line pt-4 sm:col-span-2">
+        <dt class="text-xs uppercase tracking-wide text-muted">
+          Bank prowadzący mieszkaniowy rachunek powierniczy
+        </dt>
+        <dd class="mt-2 text-sand">{inv.escrowBank}</dd>
+      </div>
+      <div class="border-t border-line pt-4 sm:col-span-2">
+        <dt class="text-xs uppercase tracking-wide text-muted">
+          Miejscowy plan zagospodarowania przestrzennego
+        </dt>
+        <dd class="mt-2 text-sand">{inv.zoningTitle}</dd>
+        <dd class="mt-2 text-muted">{inv.zoningResolution}</dd>
+        <dd class="mt-2 text-sand">Oznaczenie terenu w MPZP: {inv.zoningLabel}</dd>
+      </div>
+      <div class="border-t border-line pt-4 sm:col-span-2">
+        <dt class="text-xs uppercase tracking-wide text-muted">Numery działek objętych inwestycją</dt>
+        <dd class="mt-2 text-sand">
+          {inv.plots.map((p) => `działka nr ${p}`).join(', ')}.
+        </dd>
+        <dd class="mt-2 text-muted">
+          Działki wyodrębnione do księgi wieczystej nr {inv.landRegister}.
         </dd>
       </div>
     </dl>

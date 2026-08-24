@@ -2,10 +2,10 @@
 import { site } from '../data/site';
 
 const nearby = [
-  'Bezpośredni dojazd ul. Ziętka',
-  'Lokalizacja w Knurowie — blisko codziennych usług',
+  'Bezpośredni dojazd ul. Jerzego Ziętka',
+  'Działki nr 3537/199, 3537/201, 3537/202 (KW GL1G/00163210/2)',
+  'MPZP Knurów — teren Z24.MN (uchwała XXIII/279/2020)',
   'Dobre połączenie z Gliwicami i aglomeracją',
-  'Kameralna skala osiedla w spokojnym otoczeniu',
 ];
 
 const mapQuery = encodeURIComponent('ul. Ziętka, Knurów');
@@ -19,6 +19,9 @@ const mapQuery = encodeURIComponent('ul. Ziętka, Knurów');
         Knurów, ul. Ziętka
       </h2>
       <p class="mt-4 text-lg text-muted">{site.address}</p>
+      <p class="mt-3 text-sm text-muted">
+        {site.investment.zoningTitle}. {site.investment.zoningResolution}
+      </p>
       <ul class="mt-8 space-y-3">
         {
           nearby.map((item) => (
