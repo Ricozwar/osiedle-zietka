@@ -51,7 +51,7 @@ export const site = {
     krs: '0000957256',
     shareCapital: '5 000,00 zł',
     seat: 'ul. Kazimierza Wielkiego 9B/7, 44-194 Knurów',
-    salesOffice: 'Do uzupełnienia',
+    salesOffice: 'ul. Kazimierza Wielkiego 9B/7, 44-194 Knurów',
   },
   investment: {
     landRegister: 'GL1G/00163210/2',
