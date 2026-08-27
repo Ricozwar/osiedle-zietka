@@ -1,24 +1,5 @@
 ---
 import { asset, site } from '../data/site';
-
-const items = [
-  {
-    title: 'Instalacje',
-    text: 'Ogrzewanie podłogowe, indywidualne ogrzewanie gazowe, instalacja elektryczna, wodno-kanalizacyjna oraz centralnego ogrzewania.',
-  },
-  {
-    title: 'Wykończenie stanu deweloperskiego',
-    text: 'Tynki wewnętrzne, wylewki, stolarka okienna i drzwiowa oraz elewacja budynków.',
-  },
-  {
-    title: 'Parking i dojazd',
-    text: 'Dwa miejsca postojowe dla lokalu oraz droga wewnętrzna wykonana z kostki brukowej.',
-  },
-  {
-    title: 'Teren inwestycji',
-    text: 'Zagospodarowanie terenu inwestycji w ramach stanu deweloperskiego.',
-  },
-];
 ---
 
 <section id="standard" class="scroll-mt-20 border-t border-line/60 py-20 sm:py-28">
@@ -27,10 +8,10 @@ const items = [
       <div class="max-w-2xl">
         <p class="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-accent">Segmenty i standard</p>
         <h2 class="font-display text-3xl font-bold tracking-tight text-sand sm:text-5xl text-balance">
-          Stan deweloperski — to, co dostajesz wraz z kluczem.
+          Standard wykończenia
         </h2>
         <p class="mt-4 text-muted">
-          Zakres wykończenia zgodnie z prospektem informacyjnym przedsięwzięcia Osiedle Ziętka.
+          Podsumowanie załącznika nr 4 do prospektu informacyjnego przedsięwzięcia Osiedle Ziętka.
         </p>
       </div>
       <img
@@ -41,26 +22,22 @@ const items = [
       />
     </div>
 
-    <div class="reveal mt-12 grid gap-8 sm:grid-cols-2">
-      {
-        items.map((item) => (
-          <div class="border-t border-accent/30 pt-5">
-            <h3 class="font-display text-xl font-bold text-sand">{item.title}</h3>
-            <p class="mt-3 text-muted">{item.text}</p>
-          </div>
-        ))
-      }
-    </div>
-
-    <ul class="reveal mt-10 columns-1 gap-x-10 space-y-2 sm:columns-2">
+    <ul class="reveal mt-12 space-y-4 border-t border-accent/30 pt-8">
       {
         site.investment.finishStandard.map((item) => (
-          <li class="break-inside-avoid flex gap-3 text-sand/90">
-            <span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" aria-hidden="true" />
-            <span>{item}</span>
+          <li class="flex gap-3 text-base text-sand/90 sm:text-lg">
+            <span class="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" aria-hidden="true" />
+            <span>
+              <strong class="font-semibold text-sand">{item.title}:</strong>{' '}
+              <span class="text-muted">{item.text}</span>
+            </span>
           </li>
         ))
       }
     </ul>
+
+    <p class="reveal mt-10 max-w-3xl border-t border-line pt-6 text-sm leading-relaxed text-muted">
+      {site.investment.finishStandardExclusions}
+    </p>
   </div>
 </section>

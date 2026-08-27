@@ -63,19 +63,69 @@ export const site = {
     zoningResolution: 'Uchwała nr XXIII/279/2020 Rady Miasta Knurów z dnia 17 kwietnia 2020 r.',
     plots: ['3537/199', '3537/201', '3537/202'],
     finishStandard: [
-      'ogrzewanie podłogowe',
-      'indywidualne ogrzewanie gazowe',
-      'instalacja elektryczna',
-      'instalacja wodno-kanalizacyjna',
-      'instalacja centralnego ogrzewania',
-      'tynki wewnętrzne',
-      'wylewki',
-      'stolarka okienna i drzwiowa',
-      'elewacja budynków',
-      'dwa miejsca postojowe dla lokalu',
-      'droga wewnętrzna wykonana z kostki brukowej',
-      'zagospodarowanie terenu inwestycji',
+      {
+        title: 'Fundamenty',
+        text: 'płyta fundamentowa wzmocniona.',
+      },
+      {
+        title: 'Ściany konstrukcyjne',
+        text: 'pustak ceramiczny i słupy żelbetowe, wzmocnienia wynikające z warunków górniczych/projektu.',
+      },
+      {
+        title: 'Stropy',
+        text: 'żelbetowe.',
+      },
+      {
+        title: 'Kominy wentylacyjne',
+        text: 'pustaki wentylacyjne.',
+      },
+      {
+        title: 'Dach',
+        text: 'dachówka betonowa.',
+      },
+      {
+        title: 'Stolarka okienna',
+        text: 'pakiet trzyszybowy; jedno wyjście/drzwi przesuwne — zgodnie z projektem konkretnego lokalu.',
+      },
+      {
+        title: 'Elewacja',
+        text: 'izolacja cieplna zgodnie ze standardem — styropian 20 cm / wełna mineralna 15 cm w miejscach przewidzianych projektem.',
+      },
+      {
+        title: 'Instalacja wod.-kan.',
+        text: 'podejścia do punktów w łazience, kuchni i WC, bez końcowego białego montażu hydraulicznego.',
+      },
+      {
+        title: 'Instalacja elektryczna',
+        text: 'z osprzętem.',
+      },
+      {
+        title: 'Instalacja TV i internetowa',
+        text: 'zgodnie ze standardem.',
+      },
+      {
+        title: 'Instalacja gazowa',
+        text: 'wraz z kotłem dwufunkcyjnym c.o./c.w.u.',
+      },
+      {
+        title: 'Ogrzewanie podłogowe',
+        text: 'bez sterowników naściennych, o ile finalny standard nie stanowi inaczej.',
+      },
+      {
+        title: 'Tynki',
+        text: 'gipsowe twarde.',
+      },
+      {
+        title: 'Posadzki',
+        text: 'betonowe na warstwach izolacyjnych zgodnie z projektem.',
+      },
+      {
+        title: 'Zagospodarowanie',
+        text: 'kostka brukowa na podjazdach i ciągach komunikacyjnych; ogrodzenie i odgrodzenie stref ogródków/tarasów zgodnie z projektem.',
+      },
     ],
+    finishStandardExclusions:
+      'Zakres nie obejmuje m.in.: parapetów wewnętrznych, stolarki wewnętrznej, rolet zewnętrznych, wykończenia tarasów/balkonów, urządzenia zieleni prywatnej, gładzi, wykończenia pod klucz i białego montażu hydraulicznego — zgodnie z finalnym załącznikiem standardowym.',
   },
   documentsUpdated: '2026-08-24',
   areaRange: 'ok. 40–77 m²',
