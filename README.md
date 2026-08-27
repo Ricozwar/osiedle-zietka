@@ -25,8 +25,10 @@ Strona: http://localhost:4321
 
 ## Do uzupełnienia przed launch
 
-1. Dane dewelopera w `src/data/site.ts`
-2. PDF prospektu w `public/documents/`
-3. Kod embed Publikátor Cen w `src/components/Pricing.astro` (`#publikatorcen-embed`)
-4. Finalne renderzy w galerii
-5. Endpoint formularza kontaktowego
+1. PDF prospektu w `public/documents/`
+2. Finalne renderzy w galerii (opcjonalnie)
+3. Endpoint formularza kontaktowego
+
+## Cennik (Publikator Cen)
+
+Sekcja `#cennik` pobiera lokale z `widget.publikatorcen.pl` **przy `npm run build`** (klucz i `developerId` w `src/data/site.ts`). Po zmianie cen w panelu Publikatora trzeba przebudować i wypchnąć stronę.

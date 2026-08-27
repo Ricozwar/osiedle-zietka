@@ -79,6 +79,13 @@ export const site = {
   },
   documentsUpdated: '2026-08-24',
   areaRange: 'ok. 40–77 m²',
+  /** Widget Publikator Cen — ceny lokali (fetch przy buildzie; klucz odczytu) */
+  publikator: {
+    apiBase: 'https://widget.publikatorcen.pl',
+    apiKey: 'puw_uytQwXem0yhCxYVzdnYxjZWgzczpVzpH',
+    developerId: 'stm development| 9691650572',
+    limit: 20,
+  },
   /** Domyślnie zaznaczony segment w sekcji Plan (pierwszy dostępny) */
   defaultUnitId: 3,
   get heroImage() {

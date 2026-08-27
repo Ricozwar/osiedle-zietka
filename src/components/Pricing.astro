@@ -1,5 +1,85 @@
 ---
-import { units, statusLabel, site } from '../data/site';
+import { site } from '../data/site';
+
+type PcUnit = {
+  id: string;
+  unit_number: string;
+  area: string;
+  price_per_sqm: string;
+  total_price: string;
+  status: string;
+  balkon?: string;
+  ogrodek?: string;
+  rooms?: string;
+  floor?: string;
+};
+
+function formatPln(value: string | number | null | undefined): string {
+  if (value === null || value === undefined || value === '') return '—';
+  const n = typeof value === 'number' ? value : Number(String(value).replace(/\s/g, '').replace(',', '.'));
+  if (!Number.isFinite(n)) return String(value);
+  return (
+    new Intl.NumberFormat('pl-PL', {
+      style: 'currency',
+      currency: 'PLN',
+      maximumFractionDigits: 0,
+    }).format(n)
+  );
+}
+
+function parseArea(unit: PcUnit): string {
+  if (unit.area && String(unit.area).trim()) {
+    const a = String(unit.area).trim();
+    return /m/.test(a) ? a : `${a} m²`;
+  }
+  const m = String(unit.unit_number || '').match(/(\d+(?:[.,]\d+)?)\s*m/i);
+  if (m) return `${m[1].replace(',', '.')} m²`;
+  return '—';
+}
+
+function segmentLabel(unit: PcUnit): string {
+  const raw = String(unit.unit_number || '').trim();
+  const m = raw.match(/(?:LOKAL|SEGMENT)\s*(\d+)/i);
+  if (m) return `Segment ${m[1]}`;
+  return raw || 'Lokal';
+}
+
+function belongings(unit: PcUnit): string {
+  const parts: string[] = [];
+  if (unit.ogrodek) parts.push(`Ogródek: ${unit.ogrodek}`);
+  if (unit.balkon) parts.push(`Balkon: ${unit.balkon}`);
+  if (unit.rooms) parts.push(`Pokoje: ${unit.rooms}`);
+  if (unit.floor) parts.push(`Piętro: ${unit.floor}`);
+  return parts.length ? parts.join(' · ') : '—';
+}
+
+let units: PcUnit[] = [];
+let fetchError: string | null = null;
+let fetchedAt = '';
+
+try {
+  const url = new URL(`${site.publikator.apiBase}/api/pz/units`);
+  url.searchParams.set('developer_id', site.publikator.developerId);
+  url.searchParams.set('limit', String(site.publikator.limit));
+
+  const res = await fetch(url.toString(), {
+    headers: {
+      'X-API-Key': site.publikator.apiKey,
+      Accept: 'application/json',
+    },
+  });
+
+  if (!res.ok) {
+    fetchError = `API zwróciło status ${res.status}`;
+  } else {
+    const data = (await res.json()) as { success?: boolean; units?: PcUnit[] };
+    units = Array.isArray(data.units) ? data.units : [];
+    fetchedAt = new Date().toLocaleString('pl-PL', { timeZone: 'Europe/Warsaw' });
+    if (!units.length) fetchError = 'Brak lokali w odpowiedzi Publikator Cen.';
+  }
+} catch (err) {
+  fetchError = err instanceof Error ? err.message : 'Nie udało się pobrać cennika.';
+}
 ---
 
 <section id="cennik" class="scroll-mt-20 border-t border-line/60 bg-ink-soft/50 py-20 sm:py-28">
@@ -12,93 +92,101 @@ import { units, statusLabel, site } from '../data/site';
       <p class="mt-4 text-muted">
         Zgodnie z art. 19a ustawy deweloperskiej publikujemy ceny brutto (z VAT) za m² i całkowite,
         ceny pomieszczeń przynależnych oraz historię zmian cen od dnia rozpoczęcia sprzedaży.
+        Źródło danych: <strong class="text-sand">publikatorcen.pl</strong>.
       </p>
     </div>
 
-    <!-- Slot: publikatorcen.pl embed -->
     <div
       id="publikatorcen-embed"
-      class="reveal mt-10 rounded-xl border border-dashed border-accent/50 bg-ink/70 p-6 sm:p-8"
-      data-embed-ready="false"
+      class="reveal mt-10"
+      data-embed-ready={fetchError ? 'false' : 'true'}
     >
-      <p class="font-display text-xl font-bold text-sand">Publikator Cen — miejsce na embed</p>
-      <p class="mt-2 max-w-2xl text-sm text-muted">
-        Tutaj pojawi się widżet / iframe z <strong class="text-sand">publikatorcen.pl</strong> dla
-        inwestycji Osiedle Ziętka (karty lokali, cena/m², cena całkowita, przynależności, historia).
-        Po otrzymaniu kodu osadzenia wystarczy wkleić go w ten kontener.
-      </p>
-    </div>
-
-    <!-- Mobile: cards -->
-    <div class="reveal mt-8 space-y-3 md:hidden" aria-label="Lista segmentów Osiedle Ziętka">
       {
-        units.map((unit) => (
-          <article class="rounded-xl border border-line bg-ink/70 p-4">
-            <div class="flex items-baseline justify-between gap-3">
-              <h3 class="font-display text-xl font-bold text-sand">Segment {unit.id}</h3>
-              <p class="text-base font-semibold text-accent">{statusLabel[unit.status]}</p>
+        fetchError ? (
+          <div class="rounded-xl border border-dashed border-accent/50 bg-ink/70 p-6 sm:p-8">
+            <p class="font-display text-xl font-bold text-sand">Cennik chwilowo niedostępny</p>
+            <p class="mt-2 max-w-2xl text-sm text-muted">{fetchError}</p>
+            <p class="mt-4 text-sm text-muted">
+              Spróbuj ponownie później lub skontaktuj się z biurem sprzedaży.
+            </p>
+          </div>
+        ) : (
+          <>
+            {/* Mobile: cards */}
+            <div class="space-y-3 md:hidden" aria-label="Cennik segmentów Osiedle Ziętka">
+              {units.map((unit) => (
+                <article class="rounded-xl border border-line bg-ink/70 p-4">
+                  <div class="flex items-baseline justify-between gap-3">
+                    <h3 class="font-display text-xl font-bold text-sand">{segmentLabel(unit)}</h3>
+                    <p class="text-base font-semibold text-accent">{unit.status || '—'}</p>
+                  </div>
+                  <dl class="mt-4 space-y-3 text-base">
+                    <div class="flex justify-between gap-4 border-t border-line/60 pt-3">
+                      <dt class="text-muted">Pow. użytkowa</dt>
+                      <dd class="text-right font-medium text-sand">{parseArea(unit)}</dd>
+                    </div>
+                    <div class="flex justify-between gap-4 border-t border-line/60 pt-3">
+                      <dt class="text-muted">Cena brutto / m²</dt>
+                      <dd class="text-right font-medium text-sand">
+                        {formatPln(unit.price_per_sqm)}
+                      </dd>
+                    </div>
+                    <div class="flex justify-between gap-4 border-t border-line/60 pt-3">
+                      <dt class="text-muted">Cena całkowita brutto</dt>
+                      <dd class="text-right font-medium text-sand">
+                        {formatPln(unit.total_price)}
+                      </dd>
+                    </div>
+                    <div class="flex justify-between gap-4 border-t border-line/60 pt-3">
+                      <dt class="text-muted">Przynależności</dt>
+                      <dd class="text-right font-medium text-sand">{belongings(unit)}</dd>
+                    </div>
+                  </dl>
+                </article>
+              ))}
             </div>
-            <dl class="mt-4 space-y-3 text-base">
-              <div class="flex justify-between gap-4 border-t border-line/60 pt-3">
-                <dt class="text-muted">Pow. użytkowa</dt>
-                <dd class="text-right font-medium text-sand">{unit.area} m²</dd>
-              </div>
-              <div class="flex justify-between gap-4 border-t border-line/60 pt-3">
-                <dt class="text-muted">Cena brutto / m²</dt>
-                <dd class="text-right font-medium text-sand">— (Publikator Cen)</dd>
-              </div>
-              <div class="flex justify-between gap-4 border-t border-line/60 pt-3">
-                <dt class="text-muted">Cena całkowita brutto</dt>
-                <dd class="text-right font-medium text-sand">— (Publikator Cen)</dd>
-              </div>
-              <div class="flex justify-between gap-4 border-t border-line/60 pt-3">
-                <dt class="text-muted">Przynależności</dt>
-                <dd class="text-right font-medium text-sand">— (Publikator Cen)</dd>
-              </div>
-            </dl>
-          </article>
-        ))
-      }
-    </div>
 
-    <!-- Desktop: table -->
-    <div class="reveal mt-8 hidden overflow-x-auto rounded-xl border border-line md:block">
-      <table class="min-w-full text-left text-sm">
-        <caption class="sr-only">
-          Wstępna lista segmentów Osiedle Ziętka — ceny zostaną uzupełnione z publikatorcen.pl
-        </caption>
-        <thead class="bg-surface text-xs uppercase tracking-wide text-muted">
-          <tr>
-            <th class="px-4 py-3 font-semibold">Segment</th>
-            <th class="px-4 py-3 font-semibold">Pow. użytkowa</th>
-            <th class="px-4 py-3 font-semibold">Status</th>
-            <th class="px-4 py-3 font-semibold">Cena brutto / m²</th>
-            <th class="px-4 py-3 font-semibold">Cena całkowita brutto</th>
-            <th class="px-4 py-3 font-semibold">Przynależności</th>
-          </tr>
-        </thead>
-        <tbody>
-          {
-            units.map((unit) => (
-              <tr class="border-t border-line/80">
-                <td class="px-4 py-3 font-semibold text-sand">{unit.id}</td>
-                <td class="px-4 py-3 text-muted">{unit.area} m²</td>
-                <td class="px-4 py-3 text-muted">{statusLabel[unit.status]}</td>
-                <td class="px-4 py-3 text-muted">— (Publikator Cen)</td>
-                <td class="px-4 py-3 text-muted">— (Publikator Cen)</td>
-                <td class="px-4 py-3 text-muted">— (Publikator Cen)</td>
-              </tr>
-            ))
-          }
-        </tbody>
-      </table>
+            {/* Desktop: table */}
+            <div class="hidden overflow-x-auto rounded-xl border border-line md:block">
+              <table class="min-w-full text-left text-sm">
+                <caption class="sr-only">
+                  Cennik segmentów Osiedle Ziętka — dane z publikatorcen.pl
+                </caption>
+                <thead class="bg-surface text-xs uppercase tracking-wide text-muted">
+                  <tr>
+                    <th class="px-4 py-3 font-semibold">Segment</th>
+                    <th class="px-4 py-3 font-semibold">Pow. użytkowa</th>
+                    <th class="px-4 py-3 font-semibold">Status</th>
+                    <th class="px-4 py-3 font-semibold">Cena brutto / m²</th>
+                    <th class="px-4 py-3 font-semibold">Cena całkowita brutto</th>
+                    <th class="px-4 py-3 font-semibold">Przynależności</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {units.map((unit) => (
+                    <tr class="border-t border-line/80">
+                      <td class="px-4 py-3 font-semibold text-sand">{segmentLabel(unit)}</td>
+                      <td class="px-4 py-3 text-muted">{parseArea(unit)}</td>
+                      <td class="px-4 py-3 text-muted">{unit.status || '—'}</td>
+                      <td class="px-4 py-3 text-muted">{formatPln(unit.price_per_sqm)}</td>
+                      <td class="px-4 py-3 text-muted">{formatPln(unit.total_price)}</td>
+                      <td class="px-4 py-3 text-muted">{belongings(unit)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
+        )
+      }
     </div>
 
     <p class="reveal mt-4 text-xs leading-relaxed text-muted">
       Ceny brutto (z VAT). Historia zmian od dnia rozpoczęcia sprzedaży zgodnie z art. 19a ust. 2
       ustawy o ochronie praw nabywcy lokalu mieszkalnego lub domu jednorodzinnego oraz Deweloperskim
-      Funduszu Gwarancyjnym. Tabela powyżej jest szkieletem zgodności — źródłem cen będzie
-      publikatorcen.pl. Statusy segmentów mogą ulec zmianie.
+      Funduszu Gwarancyjnym. Źródło cen: publikatorcen.pl
+      {fetchedAt ? ` · dane z buildu: ${fetchedAt}` : ''}. Statusy i ceny mogą ulec zmianie —
+      po aktualizacji oferty w Publikatorze Cen należy ponownie opublikować stronę.
     </p>
     <p class="mt-2 text-xs text-muted">
       Inwestycja: {site.name}, {site.address}.
