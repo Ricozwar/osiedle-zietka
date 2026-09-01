@@ -1,23 +1,6 @@
 ---
 import { site } from '../data/site';
-
-type PriceHistoryRow = {
-  changed_at?: string;
-  old_price_per_sqm?: string | number;
-  new_price_per_sqm?: string | number;
-  old_total_price?: string | number;
-  new_total_price?: string | number;
-};
-
-type PcUnit = {
-  id: string;
-  unit_number: string;
-  area: string;
-  price_per_sqm: string;
-  total_price: string;
-  status: string;
-  price_history?: PriceHistoryRow[];
-};
+import { fetchPublikatorUnits, type PcUnit, type PriceHistoryRow } from '../data/publikator';
 
 function formatPln(value: string | number | null | undefined): string {
   if (value === null || value === undefined || value === '') return '—';
@@ -58,34 +41,7 @@ function historyList(unit: PcUnit): PriceHistoryRow[] {
   return Array.isArray(unit.price_history) ? unit.price_history.filter(Boolean) : [];
 }
 
-let units: PcUnit[] = [];
-let fetchError: string | null = null;
-let fetchedAt = '';
-
-try {
-  const url = new URL(`${site.publikator.apiBase}/api/pz/units`);
-  url.searchParams.set('developer_id', site.publikator.developerId);
-  url.searchParams.set('limit', String(site.publikator.limit));
-  url.searchParams.set('include_price_history', 'true');
-
-  const res = await fetch(url.toString(), {
-    headers: {
-      'X-API-Key': site.publikator.apiKey,
-      Accept: 'application/json',
-    },
-  });
-
-  if (!res.ok) {
-    fetchError = `API zwróciło status ${res.status}`;
-  } else {
-    const data = (await res.json()) as { success?: boolean; units?: PcUnit[] };
-    units = Array.isArray(data.units) ? data.units : [];
-    fetchedAt = new Date().toLocaleString('pl-PL', { timeZone: 'Europe/Warsaw' });
-    if (!units.length) fetchError = 'Brak lokali w odpowiedzi Publikator Cen.';
-  }
-} catch (err) {
-  fetchError = err instanceof Error ? err.message : 'Nie udało się pobrać cennika.';
-}
+const { units, fetchedAt, error: fetchError } = await fetchPublikatorUnits();
 ---
 
 <section id="cennik" class="scroll-mt-20 border-t border-line/60 bg-ink-soft/50 py-20 sm:py-28">

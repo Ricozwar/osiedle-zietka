@@ -1,7 +1,17 @@
 ---
-import { units, statusLabel, site, primaryUnitImage } from '../data/site';
+import { units as baseUnits, statusLabel, site, primaryUnitImage } from '../data/site';
+import { fetchStatusBySegment } from '../data/publikator';
 
-const defaultUnit = units.find((u) => u.id === site.defaultUnitId) ?? units[0];
+const liveStatuses = await fetchStatusBySegment();
+const units = baseUnits.map((u) => ({
+  ...u,
+  status: liveStatuses.get(u.id) ?? u.status,
+}));
+
+const defaultUnit =
+  units.find((u) => u.status === 'available') ??
+  units.find((u) => u.id === site.defaultUnitId) ??
+  units[0];
 const defaultPrimary = primaryUnitImage(defaultUnit);
 const unitsJson = JSON.stringify(
   units.map((u) => ({

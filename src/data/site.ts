@@ -201,7 +201,10 @@ const shared78: UnitImage[] = [
   { src: seg(7, 'plan.png'), label: 'Rzut techniczny', kind: 'plan' },
 ];
 
-/** Statusy i metraże wstępne — ceny wyłącznie z publikatorcen.pl */
+/**
+ * Metraże i galerie lokalne. Statusy i ceny nadpisywane z publikatorcen.pl
+ * przy buildzie (Plan + Cennik). Poniższe statusy to tylko fallback offline.
+ */
 export const units: Unit[] = [
   {
     id: 1,
@@ -226,7 +229,7 @@ export const units: Unit[] = [
   {
     id: 3,
     area: 40,
-    status: 'available',
+    status: 'reserved',
     images: [
       { src: seg(3, 'marketing-3d.png'), label: 'Rzut 3D', kind: 'marketing' },
       { src: seg(3, 'marketing.png'), label: 'Rzut marketingowy', kind: 'marketing' },
@@ -295,7 +298,7 @@ export const units: Unit[] = [
   {
     id: 10,
     area: 77,
-    status: 'available',
+    status: 'reserved',
     images: [
       { src: seg(10, 'marketing-3d.png'), label: 'Rzut 3D', kind: 'marketing' },
       { src: seg(10, 'marketing.png'), label: 'Rzut marketingowy', kind: 'marketing' },
@@ -306,7 +309,7 @@ export const units: Unit[] = [
   {
     id: 11,
     area: 75,
-    status: 'available',
+    status: 'reserved',
     images: [
       { src: seg(11, 'marketing.png'), label: 'Rzut marketingowy', kind: 'marketing' },
       { src: seg(11, 'marketing-3d.png'), label: 'Rzut 3D', kind: 'marketing' },
