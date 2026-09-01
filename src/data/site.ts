@@ -256,11 +256,12 @@ export const units: Unit[] = [
   },
   {
     id: 6,
-    area: 48,
+    area: 49,
+    note: 'strych',
     status: 'reserved',
     images: [
-      { src: seg(6, 'marketing-3d.png'), label: 'Rzut 3D', kind: 'marketing' },
       { src: seg(6, 'marketing.png'), label: 'Rzut marketingowy', kind: 'marketing' },
+      { src: seg(6, 'marketing-3d.png'), label: 'Rzut 3D', kind: 'marketing' },
       { src: seg(6, 'plan.png'), label: 'Rzut techniczny', kind: 'plan' },
     ],
   },
@@ -304,7 +305,7 @@ export const units: Unit[] = [
   },
   {
     id: 11,
-    area: 74,
+    area: 75,
     status: 'available',
     images: [
       { src: seg(11, 'marketing.png'), label: 'Rzut marketingowy', kind: 'marketing' },
