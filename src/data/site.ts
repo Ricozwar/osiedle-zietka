@@ -127,7 +127,7 @@ export const site = {
     finishStandardExclusions:
       'Zakres nie obejmuje m.in.: parapetów wewnętrznych, stolarki wewnętrznej, rolet zewnętrznych, wykończenia tarasów/balkonów, urządzenia zieleni prywatnej, gładzi, wykończenia pod klucz i białego montażu hydraulicznego — zgodnie z finalnym załącznikiem standardowym.',
   },
-  documentsUpdated: '2026-08-24',
+  documentsUpdated: '2026-09-01',
   areaRange: 'ok. 40–77 m²',
   /** Widget Publikator Cen — ceny lokali (fetch przy buildzie; klucz odczytu) */
   publikator: {
